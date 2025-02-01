@@ -53,3 +53,8 @@ if it is loading return a h2 loading or spinner
     2 sections taking up to 60% of the page - left side the introduction,etc - right side big picture
     middle bottom section with the login/register button
 -->
+
+<!-- Git source control - axios, j query docs - middleware and cookies exnstesive research
+        - Helmet docs, cors, mongoSanitize, xss, ratelimiter entesive research
+        - _redirect file for netifly research for both front and back
+-->

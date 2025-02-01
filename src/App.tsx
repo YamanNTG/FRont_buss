@@ -10,13 +10,13 @@ import {
   Issues,
   HolidaySwap,
   NewsFeed,
+  CreateNewsFeed,
+  CreateIssue,
+  SingleNews,
 } from './pages';
 
 import { ErrorElement } from './components';
 import Verify from './pages/Verify';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { showCurrentUser } from './features/thunks/userThunk';
-import { useEffect } from 'react';
 import { ProtectedRoute, PublicOnlyRoute } from './components';
 
 const router = createBrowserRouter([
@@ -35,12 +35,27 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />,
       },
       {
-        path: '/issues',
+        path: 'createNews',
+        element: <CreateNewsFeed />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: ':id',
+        element: <SingleNews />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'issues',
         element: <Issues />,
         errorElement: <ErrorElement />,
       },
       {
-        path: '/holidaySwap',
+        path: 'createIssue',
+        element: <CreateIssue />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'holidaySwap',
         element: <HolidaySwap />,
         errorElement: <ErrorElement />,
       },
@@ -82,12 +97,6 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(showCurrentUser());
-  }, [dispatch]);
-
   return (
     <>
       <ToastContainer />

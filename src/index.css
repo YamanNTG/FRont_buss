@@ -10,7 +10,7 @@
 
   @layer components {
     #root {
-      @apply max-w-7xl mx-auto p-8 text-center;
+      @apply max-w-7xl mx-auto px-8 text-center;
     }
   }
 
