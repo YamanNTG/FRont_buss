@@ -74,7 +74,7 @@ const Register: React.FC = () => {
             />
 
             <SubmitBtn
-              text={isLoading ? 'Loading...' : 'register'}
+              text={isLoading ? 'Loading...' : 'Register'}
               disabled={isLoading}
             />
 

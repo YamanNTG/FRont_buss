@@ -64,7 +64,7 @@ const Login: React.FC = () => {
             <FormInput type="password" label="password" name="password" />
 
             <SubmitBtn
-              text={isLoading ? 'Loading...' : 'login'}
+              text={isLoading ? 'Loading...' : 'Login'}
               disabled={isLoading}
             />
 
