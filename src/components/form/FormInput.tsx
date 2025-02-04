@@ -1,5 +1,5 @@
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
 
 type FormInputProps = {
   name?: string;
@@ -7,7 +7,6 @@ type FormInputProps = {
   type?: string;
   defaultValue?: string;
   placeholder?: string;
-  
 };
 
 function FormInput({
@@ -16,7 +15,6 @@ function FormInput({
   type,
   defaultValue,
   placeholder,
-  
 }: FormInputProps) {
   return (
     <div className="space-y-2">
@@ -30,13 +28,7 @@ function FormInput({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required
-        
       />
-      {type === 'password' && (
-      <p className="text-xs text-gray-500">
-        Password must contain at least one uppercase letter, one lowercase letter, and one number
-      </p>
-    )}
     </div>
   );
 }

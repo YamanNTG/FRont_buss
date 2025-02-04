@@ -67,6 +67,10 @@ const Register: React.FC = () => {
             <FormInput type="email" label="email" name="email" />
 
             <FormInput type="password" label="password" name="password" />
+            <p className="text-xs text-gray-500">
+              Password must contain at least one uppercase letter, one lowercase
+              letter, and one number
+            </p>
 
             <SubmitBtn
               text={isLoading ? 'Loading...' : 'Register'}
