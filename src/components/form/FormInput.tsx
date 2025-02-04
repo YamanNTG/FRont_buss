@@ -7,7 +7,7 @@ type FormInputProps = {
   type?: string;
   defaultValue?: string;
   placeholder?: string;
-  helper?: string;
+  
 };
 
 function FormInput({
@@ -16,6 +16,7 @@ function FormInput({
   type,
   defaultValue,
   placeholder,
+  
 }: FormInputProps) {
   return (
     <div className="space-y-2">
@@ -29,7 +30,13 @@ function FormInput({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required
+        
       />
+      {type === 'password' && (
+      <p className="text-xs text-gray-500">
+        Password must contain at least one uppercase letter, one lowercase letter, and one number
+      </p>
+    )}
     </div>
   );
 }

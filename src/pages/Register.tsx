@@ -56,33 +56,28 @@ const Register: React.FC = () => {
   }
 
   return (
-    <section className="h-screen grid place-items-center">
-      <Card className="w-96">
-        <CardContent className="p-8">
+    <section className="min-h-[calc(100vh-4rem)] grid place-items-center">
+      <Card className="w-full max-w-md">
+        <CardContent className="p-4 sm:p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <h4 className="text-3xl font-bold text-center">Register</h4>
+            <h4 className="text-2xl sm:text-3xl font-bold">Register</h4>
 
             <FormInput type="text" label="username" name="name" />
 
             <FormInput type="email" label="email" name="email" />
 
-            <FormInput
-              type="password"
-              label="password"
-              name="password"
-              helper="Password must contain at least one uppercase letter, one lowercase letter, and one number"
-            />
+            <FormInput type="password" label="password" name="password" />
 
             <SubmitBtn
               text={isLoading ? 'Loading...' : 'Register'}
               disabled={isLoading}
             />
 
-            <p className="text-center text-sm">
+            <p className="text-sm">
               Already a member?{' '}
               <Link
                 to="/login"
-                className="text-primary hover:underline capitalize"
+                className="text-blue-600 hover:underline capitalize"
               >
                 login
               </Link>

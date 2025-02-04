@@ -54,11 +54,11 @@ const Login: React.FC = () => {
   };
 
   return (
-    <section className="h-screen grid place-items-center">
-      <Card className="w-96">
-        <CardContent className="p-8">
+    <section className="min-h-[calc(100vh-4rem)] grid place-items-center">
+      <Card className="w-full max-w-md">
+        <CardContent className="p-4 sm:p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <h4 className="text-3xl font-bold text-center">Login</h4>
+            <h4 className="text-2xl sm:text-3xl font-bold">Login</h4>
             <FormInput type="email" label="email" name="email" />
 
             <FormInput type="password" label="password" name="password" />
@@ -68,11 +68,11 @@ const Login: React.FC = () => {
               disabled={isLoading}
             />
 
-            <p className="text-center text-sm">
+            <p className="text-sm">
               Not a member yet?{' '}
               <Link
                 to="/register"
-                className="text-primary hover:underline capitalize"
+                className="text-blue-600 hover:underline capitalize"
               >
                 register
               </Link>
