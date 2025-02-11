@@ -23,7 +23,7 @@ const Login: React.FC = () => {
           'Please verify your email. Check your inbox for verification link.',
           {
             autoClose: 5000,
-          }
+          },
         );
         return; // Don't navigate if not verified
       }
@@ -45,7 +45,7 @@ const Login: React.FC = () => {
           'Please verify your email. Check your inbox for verification link.',
           {
             autoClose: 5000,
-          }
+          },
         );
       } else {
         toast.error(error || 'Login failed');
@@ -75,6 +75,15 @@ const Login: React.FC = () => {
                 className="text-blue-600 hover:underline capitalize"
               >
                 register
+              </Link>
+            </p>
+            <p className="text-sm">
+              Forgot your password?{' '}
+              <Link
+                to="/user/forgot-password"
+                className="text-blue-600 hover:underline capitalize"
+              >
+                Reset Password
               </Link>
             </p>
           </form>

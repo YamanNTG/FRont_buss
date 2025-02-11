@@ -54,7 +54,7 @@ if it is loading return a h2 loading or spinner
     middle bottom section with the login/register button
 -->
 
-<!-- Git source control - axios, j query docs - middleware and cookies exnstesive research
-        - Helmet docs, cors, mongoSanitize, xss, ratelimiter entesive research
-        - _redirect file for netifly research for both front and back
--->
+<!-- Git source control - axios, j query  - middleware 
+        - Helmet docs, cors, mongoSanitize, xss, ratelimiter
+        - _redirect file for netifly 
+--

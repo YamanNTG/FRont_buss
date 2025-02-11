@@ -9,3 +9,6 @@ export { default as NewsFeed } from './NewsFeed';
 export { default as CreateNewsFeed } from './CreateNewsFeed';
 export { default as CreateIssue } from './CreateIssue';
 export { default as SingleNews } from './SingleNews';
+export { default as ForgotPassword } from './ForgotPassword';
+export { default as ResetPassword } from './ResetPassword';
+export { default as Verify } from './Verify';

@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser, loginUser, verifyToken } from '../thunks/authThunk';
+import {
+  registerUser,
+  loginUser,
+  verifyToken,
+  forgotPassword,
+  resetPassword,
+} from '../thunks/authThunk';
 import { AuthState } from '@/types/auth';
 
 const initialState: AuthState = {
@@ -58,6 +64,30 @@ const authSlice = createSlice({
         state.isVerified = action.payload.isVerified;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'An error occurred';
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.success = true;
+        state.msg = action.payload.msg;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'An error occurred';
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.success = true;
+        state.msg = action.payload.msg;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       });

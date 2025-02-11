@@ -11,11 +11,25 @@ export const registerSchema = z.object({
     .min(6, 'Password must be at least 6 characters')
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number',
     ),
 });
 
 export const loginSchema = z.object({
   email: z.string().email('Please provide a valid email'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Please provide a valid email'),
+});
+
+export const resetPasswordSchema = z.object({
+  password: z
+    .string()
+    .min(6, 'Password must be at least 6 characters')
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number',
+    ),
 });

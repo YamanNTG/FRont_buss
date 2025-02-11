@@ -13,11 +13,17 @@ import {
   CreateNewsFeed,
   CreateIssue,
   SingleNews,
+  ForgotPassword,
+  Verify,
+  ResetPassword,
 } from './pages';
 
-import { ErrorElement } from './components';
-import Verify from './pages/Verify';
-import { ProtectedRoute, PublicOnlyRoute } from './components';
+import {
+  ProtectedRoute,
+  PublicOnlyRoute,
+  ErrorElement,
+  InstallPWA,
+} from './components';
 
 const router = createBrowserRouter([
   {
@@ -94,12 +100,31 @@ const router = createBrowserRouter([
     element: <Verify />,
     errorElement: <ErrorElement />,
   },
+  {
+    path: '/user/forgot-password',
+    element: (
+      <PublicOnlyRoute>
+        <ForgotPassword />
+      </PublicOnlyRoute>
+    ),
+    errorElement: <ErrorElement />,
+  },
+  {
+    path: '/user/reset-password',
+    element: (
+      <PublicOnlyRoute>
+        <ResetPassword />
+      </PublicOnlyRoute>
+    ),
+    errorElement: <ErrorElement />,
+  },
 ]);
 
 const App: React.FC = () => {
   return (
     <>
       <ToastContainer />
+      <InstallPWA />
       <RouterProvider router={router} />
     </>
   );
