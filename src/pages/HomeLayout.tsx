@@ -1,13 +1,12 @@
 //navbar + outlet
 
-import { Outlet } from "react-router-dom";
+import { Navbar } from '@/components';
+import { Outlet } from 'react-router-dom';
 
 const HomeLayout = () => {
   return (
     <>
-      <nav>
-        <span className="text-4xl text-primary">Dbuus</span>
-      </nav>
+      <Navbar />
       <Outlet />
     </>
   );

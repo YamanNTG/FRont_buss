@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const InstallPWA = () => {
   const [installPrompt, setInstallPrompt] = useState<any>(null);

@@ -16,6 +16,7 @@ import {
   ForgotPassword,
   Verify,
   ResetPassword,
+  Profile,
 } from './pages';
 
 import {
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />,
       },
       {
-        path: 'issues',
+        path: 'safety',
         element: <Issues />,
         errorElement: <ErrorElement />,
       },
@@ -61,8 +62,13 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />,
       },
       {
-        path: 'holidaySwap',
+        path: 'swaps',
         element: <HolidaySwap />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: 'profile',
+        element: <Profile />,
         errorElement: <ErrorElement />,
       },
     ],
