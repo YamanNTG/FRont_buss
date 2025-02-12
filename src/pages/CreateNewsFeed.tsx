@@ -8,23 +8,23 @@ import { useEffect } from 'react';
 const CreateNewsFeed = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
-  const checkRole = async () => {
-    if (user?.role !== 'admin') {
-      navigate('/');
-      return;
-    }
-  };
+  // const { user } = useSelector((state) => state.auth);
+  // const checkRole = async () => {
+  //   if (user?.role !== 'admin') {
+  //     navigate('/');
+  //     return;
+  //   }
+  // };
 
-  useEffect(() => {
-    checkRole();
-  }, []);
+  // useEffect(() => {
+  //   checkRole();
+  // }, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     try {
-      console.log('Starting submission...');
+      // Get the base news data first
       let newsData: {
         title: string;
         description: string;
@@ -33,28 +33,16 @@ const CreateNewsFeed = () => {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
       };
-
+      // Check if an image was provided
       const image = formData.get('image') as File;
       if (image && image.size > 0) {
-        console.log('Image found, uploading...', {
-          name: image.name,
-          size: image.size,
-          type: image.type,
-        });
-
-        try {
-          const uploadResponse = await dispatch(uploadFile(image)).unwrap();
-          console.log('Upload successful:', uploadResponse);
-          newsData.image = uploadResponse.image;
-        } catch (uploadError) {
-          console.error('Image upload failed:', uploadError);
-          throw new Error('Failed to upload image');
-        }
+        // Only upload and add image if one was provided
+        const uploadResponse = await dispatch(uploadFile(image)).unwrap();
+        newsData['image'] = uploadResponse.image;
       }
 
-      console.log('Creating news with data:', newsData);
-      const result = await dispatch(createNews(newsData)).unwrap();
-      console.log('News created:', result);
+      // Create the news with or without image
+      await dispatch(createNews(newsData)).unwrap();
       navigate('/');
     } catch (error) {
       console.error('Operation failed:', error);

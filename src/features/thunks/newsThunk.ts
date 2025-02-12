@@ -7,43 +7,28 @@ interface UploadResponse {
   image: string;
 }
 
-export const uploadFile = createAsyncThunk<
-  UploadResponse,
-  File,
-  { rejectValue: string }
->('news/uploadFile', async (image: File, { rejectWithValue }) => {
-  try {
-    const formData = new FormData();
-    formData.append('image', image);
+export const uploadFile = createAsyncThunk<UploadResponse, File>(
+  'news/uploadFile',
+  async (image: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('image', image);
 
-    console.log('Uploading file:', {
-      fileName: image.name,
-      fileSize: image.size,
-      fileType: image.type,
-    });
-
-    const response = await customFetch.post<UploadResponse>(
-      '/api/v1/news/uploadImage',
-      formData,
-    );
-
-    console.log('Upload response:', response.data);
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error('Upload error details:', {
-        status: error.response?.status,
-        data: error.response?.data,
-        headers: error.response?.headers,
-        message: error.message,
-      });
-      return rejectWithValue(
-        error.response?.data?.msg || 'Failed to upload image',
+      const response = await customFetch.post<UploadResponse>(
+        '/api/v1/news/uploadImage',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       );
+      return response.data;
+    } catch (err: unknown) {
+      throw new Error('Failed to upload file');
     }
-    return rejectWithValue('An unexpected error occurred during upload');
-  }
-});
+  },
+);
 
 export const createNews = createAsyncThunk<any, CreateNewsData>(
   'news/createNews',
