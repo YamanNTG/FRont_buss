@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { customFetch } from '@/utils/customFetch';
+import { customFetch, customImageFetch } from '@/utils/customFetch';
 import { CreateNewsData, NewsItem } from '@/types/news';
 
 import { AxiosError } from 'axios';
@@ -14,17 +14,12 @@ export const uploadFile = createAsyncThunk<UploadResponse, File>(
       const formData = new FormData();
       formData.append('image', image);
 
-      console.log('About to make request to:', '/api/v1/news/uploadImage');
-
-      const response = await customFetch.post<UploadResponse>(
+      const response = await customImageFetch.post<UploadResponse>(
         '/api/v1/news/uploadImage',
         formData,
       );
-
-      console.log('Response:', response);
       return response.data;
     } catch (err: unknown) {
-      console.error('Upload error:', err);
       throw new Error('Failed to upload file');
     }
   },

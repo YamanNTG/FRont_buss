@@ -3,17 +3,15 @@ import axios from 'axios';
 export const customFetch = axios.create({
   baseURL: '',
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
-customFetch.interceptors.request.use((config) => {
-  // For file uploads, override the baseURL to always use the direct Heroku URL
-  if (config.data instanceof FormData) {
-    config.headers['Content-Type'] = 'multipart/form-data';
-    config.baseURL = 'https://dbuss-api-025-8594a98bd0c9.herokuapp.com';
-    // Ensure cookies are sent with the request
-    config.withCredentials = true;
-  } else {
-    config.headers['Content-Type'] = 'application/json';
-  }
-  return config;
+export const customImageFetch = axios.create({
+  baseURL: 'https://dbuss-api-025-8594a98bd0c9.herokuapp.com/',
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
 });
