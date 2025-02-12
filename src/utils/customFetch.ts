@@ -1,18 +1,17 @@
 import axios from 'axios';
 
-const isProd = window.location.hostname !== 'localhost';
-const baseURL = isProd
-  ? 'https://dbuss-api-025-8594a98bd0c9.herokuapp.com'
-  : '';
-
 export const customFetch = axios.create({
-  baseURL,
+  baseURL: '',
   withCredentials: true,
 });
 
 customFetch.interceptors.request.use((config) => {
+  // For file uploads, override the baseURL to always use the direct Heroku URL
   if (config.data instanceof FormData) {
     config.headers['Content-Type'] = 'multipart/form-data';
+    config.baseURL = 'https://dbuss-api-025-8594a98bd0c9.herokuapp.com';
+    // Ensure cookies are sent with the request
+    config.withCredentials = true;
   } else {
     config.headers['Content-Type'] = 'application/json';
   }
