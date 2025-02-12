@@ -41,13 +41,14 @@ const router = createBrowserRouter([
         element: <NewsFeed />,
         errorElement: <ErrorElement />,
       },
+
       {
         path: 'createNews',
         element: <CreateNewsFeed />,
         errorElement: <ErrorElement />,
       },
       {
-        path: ':id',
+        path: '/news/:id',
         element: <SingleNews />,
         errorElement: <ErrorElement />,
       },

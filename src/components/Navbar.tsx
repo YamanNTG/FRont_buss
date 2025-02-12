@@ -5,7 +5,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { logoutUser } from '@/features/thunks/authThunk';
-import { toast } from 'react-toastify';
 
 type NavItem = {
   name: string;

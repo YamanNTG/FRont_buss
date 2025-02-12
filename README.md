@@ -54,7 +54,20 @@ if it is loading return a h2 loading or spinner
     middle bottom section with the login/register button
 -->
 
-<!-- Git source control - axios, j query  - middleware 
+<!-- Git source control - axios, j query  - middleware
         - Helmet docs, cors, mongoSanitize, xss, ratelimiter
-        - _redirect file for netifly 
+        - _redirect file for netifly
 --
+
+
+<!-- NEWS : only admins can create/post news
+    - newsFedd will have a create news button which wil redirec to /createNews
+    - in create news there will be a Form waiting for all the inputs to be filled:
+       - Title , description , image/pdf ,
+    Model will wait for the input + createdAt(timestamps), createdBy, will be tided to the user that created it.
+
+
+    News will display on the feedPage as a card with just a title - short description and who created it- once they click the card will be redirected to that singleNewsPage which will contain a wider description with images/pdf/'S previews.
+
+    I should first invoke the uploadImage endpoint in the form - upload image button, which will give me as a result the src of the image and thats what i pass on the create news along the other details.
+ - -->

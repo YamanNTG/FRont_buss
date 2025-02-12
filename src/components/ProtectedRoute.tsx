@@ -11,7 +11,7 @@ type ProtectedRouteProps = {
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const dispatch = useDispatch();
   const { isAuthenticated, isLoading } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user,
   );
   const [isChecking, setIsChecking] = useState(true);
 
