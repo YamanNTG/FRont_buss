@@ -5,18 +5,12 @@ export const customFetch = axios.create({
   withCredentials: true,
 });
 
-// export const customFetch = axios.create({
-//   baseURL: 'http://localhost:5000',
-//   withCredentials: true,
-// });
-
-// Let the interceptor handle Content-Type dynamically
 customFetch.interceptors.request.use((config) => {
+  // For file uploads, override the baseURL to always use the direct Heroku URL
   if (config.data instanceof FormData) {
-    // For file uploads
     config.headers['Content-Type'] = 'multipart/form-data';
+    config.baseURL = 'https://dbuss-api-025-8594a98bd0c9.herokuapp.com';
   } else {
-    // For regular JSON requests
     config.headers['Content-Type'] = 'application/json';
   }
   return config;
