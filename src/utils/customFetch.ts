@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+const isProd = window.location.hostname !== 'localhost';
+const baseURL = isProd
+  ? 'https://dbuss-api-025-8594a98bd0c9.herokuapp.com'
+  : '';
+
 export const customFetch = axios.create({
-  baseURL: '',
+  baseURL,
   withCredentials: true,
 });
 
