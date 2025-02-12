@@ -17,11 +17,6 @@ export const uploadFile = createAsyncThunk<UploadResponse, File>(
       const response = await customFetch.post<UploadResponse>(
         '/api/v1/news/uploadImage',
         formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        },
       );
       return response.data;
     } catch (err: unknown) {
