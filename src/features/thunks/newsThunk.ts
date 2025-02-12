@@ -13,29 +13,28 @@ export const uploadFile = createAsyncThunk<
   { rejectValue: string }
 >('news/uploadFile', async (image: File, { rejectWithValue }) => {
   try {
-    // Add client-side validation
-    if (!image.type.startsWith('image/')) {
-      return rejectWithValue('Please upload an image file');
-    }
-
-    // Check file size (5MB)
-    if (image.size > 5 * 1024 * 1024) {
-      return rejectWithValue('Image size must be less than 5MB');
-    }
-
     const formData = new FormData();
     formData.append('image', image);
+
+    console.log('Uploading file:', {
+      fileName: image.name,
+      fileSize: image.size,
+      fileType: image.type,
+    });
 
     const response = await customFetch.post<UploadResponse>(
       '/api/v1/news/uploadImage',
       formData,
     );
+
+    console.log('Upload response:', response.data);
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error('Upload error details:', {
         status: error.response?.status,
         data: error.response?.data,
+        headers: error.response?.headers,
         message: error.message,
       });
       return rejectWithValue(

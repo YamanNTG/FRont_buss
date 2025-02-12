@@ -24,7 +24,7 @@ const CreateNewsFeed = () => {
     const formData = new FormData(e.currentTarget);
 
     try {
-      // Get the base news data first
+      console.log('Starting submission...');
       let newsData: {
         title: string;
         description: string;
@@ -33,16 +33,28 @@ const CreateNewsFeed = () => {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
       };
-      // Check if an image was provided
+
       const image = formData.get('image') as File;
       if (image && image.size > 0) {
-        // Only upload and add image if one was provided
-        const uploadResponse = await dispatch(uploadFile(image)).unwrap();
-        newsData['image'] = uploadResponse.image;
+        console.log('Image found, uploading...', {
+          name: image.name,
+          size: image.size,
+          type: image.type,
+        });
+
+        try {
+          const uploadResponse = await dispatch(uploadFile(image)).unwrap();
+          console.log('Upload successful:', uploadResponse);
+          newsData.image = uploadResponse.image;
+        } catch (uploadError) {
+          console.error('Image upload failed:', uploadError);
+          throw new Error('Failed to upload image');
+        }
       }
 
-      // Create the news with or without image
-      await dispatch(createNews(newsData)).unwrap();
+      console.log('Creating news with data:', newsData);
+      const result = await dispatch(createNews(newsData)).unwrap();
+      console.log('News created:', result);
       navigate('/');
     } catch (error) {
       console.error('Operation failed:', error);
