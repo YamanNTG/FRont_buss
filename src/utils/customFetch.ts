@@ -1,9 +1,14 @@
 import axios from 'axios';
 
 export const customFetch = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+  baseURL: '',
   withCredentials: true,
 });
+
+// export const customFetch = axios.create({
+//   baseURL: 'http://localhost:5000',
+//   withCredentials: true,
+// });
 
 // Let the interceptor handle Content-Type dynamically
 customFetch.interceptors.request.use((config) => {
