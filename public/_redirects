@@ -1,3 +1,5 @@
+/api/v1/news/uploadImage  https://dbuss-api-025-8594a98bd0c9.herokuapp.com/api/v1/news/uploadImage  200
+
 /api/*  https://dbuss-api-025-8594a98bd0c9.herokuapp.com/api/:splat  200
 
 /* /index.html 200
