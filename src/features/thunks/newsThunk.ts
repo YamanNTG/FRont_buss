@@ -14,12 +14,17 @@ export const uploadFile = createAsyncThunk<UploadResponse, File>(
       const formData = new FormData();
       formData.append('image', image);
 
+      console.log('About to make request to:', '/api/v1/news/uploadImage');
+
       const response = await customFetch.post<UploadResponse>(
         '/api/v1/news/uploadImage',
         formData,
       );
+
+      console.log('Response:', response);
       return response.data;
     } catch (err: unknown) {
+      console.error('Upload error:', err);
       throw new Error('Failed to upload file');
     }
   },
