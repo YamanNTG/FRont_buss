@@ -1,13 +1,75 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { customFetch } from '@/utils/customFetch';
-import { RegisterUserData, User } from '@/types/auth';
+import { RegisterUserData, User, InviteUserData } from '@/types/auth';
 import {
   registerSchema,
   loginSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
+  registerInviteSchema,
 } from '@/utils/schemas';
 import { AxiosError } from 'axios';
+
+type InviteResponse = {
+  message: string;
+};
+
+export const inviteUser = createAsyncThunk<InviteResponse, InviteUserData>(
+  'auth/register-invite',
+  async (inviteData, { rejectWithValue }) => {
+    try {
+      // Validate data with Zod before sending
+      const validatedData = registerInviteSchema.parse(inviteData);
+      const response = await customFetch.post(
+        '/api/v1/auth/register-invite',
+        validatedData,
+      );
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(
+          error.response?.data?.msg || 'Password Reset Failed',
+        );
+      }
+      return rejectWithValue('An unexpected error occurred');
+    }
+  },
+);
+
+type VerifyRegisterTokenPayload = {
+  inviteToken: string;
+  email: string;
+};
+
+type VerifyRegisterTokenResponse = {
+  msg: string | null;
+};
+
+export const verifyRegisterToken = createAsyncThunk<
+  VerifyRegisterTokenResponse, // Success type
+  VerifyRegisterTokenPayload, // Payload type
+  { rejectValue: string }
+>( // Rejection type
+  'auth/verify-register-token',
+  async (
+    { inviteToken, email }: VerifyRegisterTokenPayload,
+    { rejectWithValue },
+  ) => {
+    try {
+      const response = await customFetch.post('/api/v1/auth/register-token', {
+        inviteToken,
+        email,
+      });
+
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(error.response?.data?.msg || 'Login failed');
+      }
+      return rejectWithValue('An unexpected error occurred');
+    }
+  },
+);
 
 export const registerUser = createAsyncThunk<{ user: User }, RegisterUserData>(
   'auth/register',

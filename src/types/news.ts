@@ -4,6 +4,7 @@ export type NewsItem = {
   description: string;
   image: string;
   user: string;
+  createdAt: Date;
 };
 
 export type NewsState = {

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { getSingleNews } from '@/features/thunks/newsThunk';
+import { formatDate } from '@/utils/formatDate';
 
 interface SingleNewsContentProps {
   newsId: string;
@@ -38,9 +39,14 @@ const SingleNewsContent = ({ newsId }: SingleNewsContentProps) => {
           />
         </div>
       )}
-      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+      <p className="text-gray-700 leading-relaxed whitespace-pre-wrap mb-8">
         {singleNews.description}
       </p>
+      <div className="text-center border-t border-gray-200 pt-4">
+        <p className="text-sm text-gray-500">
+          {formatDate(singleNews.createdAt)}
+        </p>
+      </div>
     </article>
   );
 };

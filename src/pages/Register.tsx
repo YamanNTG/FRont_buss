@@ -1,15 +1,39 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FormInput, SubmitBtn } from '@/components/form';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { RegisterUserData } from '@/types/auth';
-import { registerUser } from '@/features/thunks/authThunk';
+import { registerUser, verifyRegisterToken } from '@/features/thunks/authThunk';
+
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 const Register: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const query = useQuery();
   const { isLoading, success } = useSelector((state) => state.auth);
+  const inviteToken = query.get('token');
+  const email = query.get('email') as string;
+
+  const verifyToken = async () => {
+    if (!inviteToken || !email) {
+      navigate('/login');
+      return;
+    }
+    try {
+      await dispatch(verifyRegisterToken({ inviteToken, email })).unwrap();
+    } catch (error) {
+      toast.error('Use the link provided in your email to register', {
+        autoClose: 5000,
+      });
+      navigate('/login');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,9 +51,15 @@ const Register: React.FC = () => {
         draggable: true,
       });
     } catch (error) {
-      console.error('Registration failed:', error);
+      toast.error('Use the link provided in your email to register', {
+        autoClose: 5000,
+      });
+      navigate('/login');
     }
   };
+  useEffect(() => {
+    verifyToken();
+  }, []);
 
   if (success) {
     return (
@@ -64,7 +94,13 @@ const Register: React.FC = () => {
 
             <FormInput type="text" label="username" name="name" />
 
-            <FormInput type="email" label="email" name="email" />
+            <FormInput
+              type="email"
+              label="email"
+              name="email"
+              defaultValue={email}
+              readOnly={true}
+            />
 
             <FormInput type="password" label="password" name="password" />
             <p className="text-xs text-gray-500">

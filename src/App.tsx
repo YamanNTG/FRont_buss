@@ -17,6 +17,7 @@ import {
   Verify,
   ResetPassword,
   Profile,
+  Users,
 } from './pages';
 
 import {
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />,
       },
       {
+        path: 'users',
+        element: <Users />,
+        errorElement: <ErrorElement />,
+      },
+      {
         path: 'profile',
         element: <Profile />,
         errorElement: <ErrorElement />,
@@ -96,9 +102,9 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: (
-      <PublicOnlyRoute>
-        <Register />
-      </PublicOnlyRoute>
+      // <PublicOnlyRoute>
+      <Register />
+      // </PublicOnlyRoute>
     ),
     errorElement: <Error />,
   },

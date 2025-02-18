@@ -3,3 +3,10 @@ export { default as ProtectedRoute } from './ProtectedRoute';
 export { default as PublicOnlyRoute } from './PublicOnlyRoute';
 export { default as InstallPWA } from './InstallPWA';
 export { default as Navbar } from './Navbar';
+export { default as RegisterInvite } from './auth/RegisterInvite';
+export { default as UpdateUser } from './user/UpdateUser';
+export { default as UpdateUserPassword } from './user/UpdateUserPassword';
+export { default as DeleteNewsButton } from './news/DeleteNewsButton';
+export { default as SingleNewsContent } from './news/SingleNewsContent';
+
+export { default as UpdateNewsForm } from './news/UpdateNewsForm';

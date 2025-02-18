@@ -4,14 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-
-interface NewsItem {
-  _id: string;
-  title: string;
-  description: string;
-  image: string;
-  user: string;
-}
+import { formatDate } from '@/utils/formatDate';
+import { NewsItem } from '@/types/news';
 
 interface NewsState {
   news: NewsItem[];
@@ -36,7 +30,6 @@ function NewsFeed() {
   }, [dispatch]);
 
   const { news, count } = useSelector((state) => state.news as NewsState);
-  console.log(news, count);
 
   if (count === 0) {
     return (
@@ -80,14 +73,14 @@ function NewsFeed() {
           <Card
             onClick={() => navigate(`/news/${newsItem._id}`)}
             key={newsItem._id}
-            className="overflow-hidden hover:shadow-xl transition-all duration-300 border-gray-200 rounded-xl bg-white"
+            className="overflow-hidden hover:shadow-xl transition-all duration-300 border-gray-200 rounded-xl bg-white flex flex-col"
           >
             <CardHeader className="px-6 pt-6 pb-4">
               <CardTitle className="text-xl font-bold tracking-tight text-gray-900 line-clamp-2 leading-tight">
                 {newsItem.title}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 px-6 pb-6">
+            <CardContent className="space-y-6 px-6 flex-grow">
               <p className="text-gray-600 leading-relaxed text-base line-clamp-3">
                 {newsItem.description}
               </p>
@@ -101,6 +94,11 @@ function NewsFeed() {
                 </div>
               )}
             </CardContent>
+            <div className="text-center border-t border-gray-200 pt-4">
+              <p className="text-sm text-gray-500">
+                {formatDate(newsItem.createdAt)}
+              </p>
+            </div>
           </Card>
         ))}
       </div>

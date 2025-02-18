@@ -18,6 +18,10 @@ export type RegisterUserData = {
   email: string;
   password: string;
 };
+export type InviteUserData = {
+  name: string;
+  email: string;
+};
 
 export type LoginUserData = {
   email: string;

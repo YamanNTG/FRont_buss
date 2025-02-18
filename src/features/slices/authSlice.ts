@@ -6,6 +6,8 @@ import {
   forgotPassword,
   resetPassword,
   logoutUser,
+  inviteUser,
+  verifyRegisterToken,
 } from '../thunks/authThunk';
 import { AuthState } from '@/types/auth';
 
@@ -29,6 +31,21 @@ const authSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      // Invite User
+      .addCase(inviteUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(inviteUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.success = true;
+      })
+      .addCase(inviteUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'An error occurred';
+      })
+
+      // Register User
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -41,6 +58,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       })
+      // VerifyToken
       .addCase(verifyToken.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -54,6 +72,22 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       })
+
+      // VerifyRegisterToken
+      .addCase(verifyRegisterToken.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(verifyRegisterToken.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.msg = action.payload.msg;
+      })
+      .addCase(verifyRegisterToken.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'An error occurred';
+      })
+
+      // Login User
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -68,6 +102,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       })
+      // Forgot Password
       .addCase(forgotPassword.pending, (state) => {
         state.isLoading = true;
       })
@@ -80,6 +115,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       })
+      // Reset Password
       .addCase(resetPassword.pending, (state) => {
         state.isLoading = true;
       })
@@ -92,6 +128,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       })
+      // Logout User
       .addCase(logoutUser.pending, (state) => {
         state.isLoading = true;
       })

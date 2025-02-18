@@ -8,17 +8,17 @@ import { useEffect } from 'react';
 const CreateNewsFeed = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const { user } = useSelector((state) => state.auth);
-  // const checkRole = async () => {
-  //   if (user?.role !== 'admin') {
-  //     navigate('/');
-  //     return;
-  //   }
-  // };
+  const { user } = useSelector((state) => state.auth);
+  const checkRole = async () => {
+    if (user?.role !== 'admin') {
+      navigate('/');
+      return;
+    }
+  };
 
-  // useEffect(() => {
-  //   checkRole();
-  // }, []);
+  useEffect(() => {
+    checkRole();
+  }, []);
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);

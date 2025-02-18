@@ -71,3 +71,16 @@ if it is loading return a h2 loading or spinner
 
     I should first invoke the uploadImage endpoint in the form - upload image button, which will give me as a result the src of the image and thats what i pass on the create news along the other details.
  - -->
+
+ <!-- Issues: only admins can create/post or update issues
+    - similar to newsfeed, there will be a create issues button which will take you to the createIssues page:
+    it will contain: Title, descreption, location, status,picture will be tied to the user.
+    integrare google maps / location optional . 
+  -->
+
+  <!-- User: - Will have the RegisterInvite componenet: which will take an input : email and will send the invitation that will trigger the action.
+   
+      - Create a Model call, InviteTokens: which wil0l contain the token that we ll use to verify the user torught the url.
+
+      Steps : 1. /register-invite on back end.  
+   -->

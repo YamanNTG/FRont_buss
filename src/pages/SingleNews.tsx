@@ -1,8 +1,11 @@
 import { useSelector } from '@/utils/hooks';
 import { useParams } from 'react-router-dom';
-import DeleteNewsButton from '@/components/DeleteNewsButton';
-import SingleNewsContent from '@/components/SingleNewsContent';
-import UpdateNewsForm from '@/components/UpdateNewsForm';
+import {
+  DeleteNewsButton,
+  SingleNewsContent,
+  UpdateNewsForm,
+} from '@/components';
+
 import { useState } from 'react';
 
 const SingleNews = () => {

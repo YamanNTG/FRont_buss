@@ -7,6 +7,9 @@ type FormInputProps = {
   type?: string;
   defaultValue?: string;
   placeholder?: string;
+  readOnly?: boolean;
+  disabled?: boolean;
+  className?: string;
 };
 
 function FormInput({
@@ -15,6 +18,9 @@ function FormInput({
   type,
   defaultValue,
   placeholder,
+  readOnly = false,
+  disabled = false,
+  className = '',
 }: FormInputProps) {
   return (
     <div className="space-y-2">
@@ -28,6 +34,9 @@ function FormInput({
         defaultValue={defaultValue}
         placeholder={placeholder}
         required
+        readOnly={readOnly}
+        disabled={disabled}
+        className={className}
       />
     </div>
   );

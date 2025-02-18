@@ -69,15 +69,6 @@ const Login: React.FC = () => {
             />
 
             <p className="text-sm">
-              Not a member yet?{' '}
-              <Link
-                to="/register"
-                className="text-blue-600 hover:underline capitalize"
-              >
-                register
-              </Link>
-            </p>
-            <p className="text-sm">
               Forgot your password?{' '}
               <Link
                 to="/user/forgot-password"

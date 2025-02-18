@@ -17,11 +17,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoading } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.user);
 
   const navItems: NavItem[] = [
     { name: 'News', path: '/' },
     { name: 'Safety', path: '/safety' },
     { name: 'Swaps', path: '/swaps' },
+    { name: 'Users', path: '/users' },
   ];
 
   const handleLogout = async () => {
@@ -73,7 +75,13 @@ const Navbar = () => {
               }`}
               aria-label="Profile"
             >
-              <CgProfile className="h-6 w-6 text-primary text-primary-600" />
+              <div className="relative w-10 h-10 rounded-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                <img
+                  src={user?.profileImage}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </Link>
             <button
               disabled={isLoading}
