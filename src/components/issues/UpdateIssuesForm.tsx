@@ -5,7 +5,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { SubmitBtn } from '@/components/form';
 import { useNavigate } from 'react-router-dom';
 import LocationPicker from '../issues/LocationPicker';
-import { toast } from 'react-toastify';
 
 interface UpdateIssueFormProps {
   issueId: string;
@@ -88,18 +87,7 @@ const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
         }),
       ).unwrap();
 
-      toast.success('Issue Updated Successfully', {
-        position: 'top-center',
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
+      navigate(`/safety`);
     } catch (error) {
       console.error('Failed to update issue:', error);
     }
