@@ -18,6 +18,7 @@ import {
   ResetPassword,
   Profile,
   Users,
+  SingleIssue,
 } from './pages';
 
 import {
@@ -61,6 +62,11 @@ const router = createBrowserRouter([
       {
         path: 'createIssue',
         element: <CreateIssue />,
+        errorElement: <ErrorElement />,
+      },
+      {
+        path: '/issues/:id',
+        element: <SingleIssue />,
         errorElement: <ErrorElement />,
       },
       {

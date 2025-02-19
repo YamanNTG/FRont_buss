@@ -10,3 +10,7 @@ export { default as DeleteNewsButton } from './news/DeleteNewsButton';
 export { default as SingleNewsContent } from './news/SingleNewsContent';
 
 export { default as UpdateNewsForm } from './news/UpdateNewsForm';
+export { default as LocationPicker } from './issues/LocationPicker';
+export { default as DeleteIssuesButton } from './issues/DeleteIssuesButton';
+export { default as SingleIssueContent } from './issues/SingleIssueContent';
+export { default as UpdateIssuesForm } from './issues/UpdateIssuesForm';

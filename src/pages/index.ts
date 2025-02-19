@@ -14,3 +14,4 @@ export { default as ResetPassword } from './ResetPassword';
 export { default as Verify } from './Verify';
 export { default as Profile } from './Profile';
 export { default as Users } from './Users';
+export { default as SingleIssue } from './SingleIssue';

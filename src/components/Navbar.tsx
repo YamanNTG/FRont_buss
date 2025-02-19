@@ -1,10 +1,12 @@
 import { FaBus } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
+import { FaPlus } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { logoutUser } from '@/features/thunks/authThunk';
+import { Button } from '@/components/ui/button';
 
 type NavItem = {
   name: string;
@@ -66,6 +68,12 @@ const Navbar = () => {
 
           {/* Desktop Profile and Logout - Hidden on mobile */}
           <div className="hidden md:flex items-center space-x-4">
+            <Button
+              onClick={() => navigate('/createIssue')}
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all"
+            >
+              Create Issue
+            </Button>
             <Link
               to="/profile"
               className={`nav-link p-2 rounded-full transition-colors duration-200 ${
@@ -132,6 +140,19 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
+
+            {/* Mobile Create Issue Link */}
+            <Link
+              to="/createIssue"
+              onClick={() => setIsMenuOpen(false)}
+              className={`mt-3 flex items-center justify-center w-full px-3 py-2 rounded-md transition-colors duration-200 ${
+                location.pathname === '/createIssue'
+                  ? 'bg-primary/10 text-primary font-semibold'
+                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+              }`}
+            >
+              <FaPlus className="h-5 w-5 mr-2 text-primary text-primary-600" />
+            </Link>
 
             {/* Mobile Profile Link */}
             <Link
