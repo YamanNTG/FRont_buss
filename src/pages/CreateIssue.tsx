@@ -2,20 +2,34 @@ import React, { useState } from 'react';
 import { useDispatch } from '@/utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import { createIssue } from '../features/thunks/issuesThunk';
 import { LocationPicker } from '../components';
+
+interface IssueData {
+  title: string;
+  description: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+}
+
+const DEFAULT_LOCATION = {
+  lat: 53.3498,
+  lng: -6.2603,
+};
 
 const CreateIssue = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [issueData, setIssueData] = useState({
+  const [issueData, setIssueData] = useState<IssueData>({
     title: '',
     description: '',
-    location: {
-      lat: 53.3498,
-      lng: -6.2603,
-    },
+    location: DEFAULT_LOCATION,
   });
 
   const handleInputChange = (
@@ -43,6 +57,7 @@ const CreateIssue = () => {
       navigate('/safety');
     } catch (error) {
       console.error('Error creating issue:', error);
+      // You might want to add proper error handling here
     }
   };
 
@@ -69,7 +84,7 @@ const CreateIssue = () => {
                   >
                     Title
                   </label>
-                  <input
+                  <Input
                     type="text"
                     id="title"
                     name="title"
@@ -77,10 +92,7 @@ const CreateIssue = () => {
                     required
                     value={issueData.title}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-md border border-gray-300 
-                             shadow-sm focus:ring-2 focus:ring-blue-500 
-                             focus:border-blue-500 transition-colors
-                             text-sm md:text-base"
+                    className="w-full text-sm md:text-base"
                   />
                 </div>
 
@@ -91,7 +103,7 @@ const CreateIssue = () => {
                   >
                     Description
                   </label>
-                  <textarea
+                  <Textarea
                     id="description"
                     name="description"
                     placeholder="Enter issue description"
@@ -99,10 +111,7 @@ const CreateIssue = () => {
                     rows={4}
                     value={issueData.description}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-md border border-gray-300 
-                             shadow-sm focus:ring-2 focus:ring-blue-500 
-                             focus:border-blue-500 transition-colors
-                             text-sm md:text-base resize-y min-h-[120px]"
+                    className="w-full text-sm md:text-base resize-y min-h-[120px]"
                   />
                 </div>
 
@@ -110,21 +119,24 @@ const CreateIssue = () => {
                   <label className="block text-sm font-medium text-gray-700">
                     Issue Location
                   </label>
-                  <LocationPicker onLocationSelect={handleLocationSelect} />
+                  <div className="rounded-md overflow-hidden border border-gray-300">
+                    <LocationPicker
+                      onLocationSelect={handleLocationSelect}
+                      initialLocation={issueData.location}
+                      isPinDraggable={true}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="pt-4">
-                <button
+                <Button
                   type="submit"
-                  className="w-full py-3 text-sm md:text-base 
-                           bg-gradient-to-r from-blue-500 to-blue-600 
-                           hover:from-blue-600 hover:to-blue-700 
-                           text-white font-medium rounded-md 
-                           shadow-sm transition-all duration-200"
+                  className="w-full py-3 text-sm md:text-base bg-gradient-to-r from-blue-500 to-blue-600 
+                           hover:from-blue-600 hover:to-blue-700 text-white font-medium"
                 >
                   Create Issue
-                </button>
+                </Button>
               </div>
             </form>
           </CardContent>

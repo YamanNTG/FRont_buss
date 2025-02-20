@@ -217,6 +217,7 @@ const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
                   lat: formData.location.lat,
                   lng: formData.location.lng,
                 }}
+                isPinDraggable={true}
               />
             </div>
           </div>
