@@ -37,7 +37,13 @@ const SingleIssueContent = ({ issueId }: SingleIssueContentProps) => {
 
   return (
     <article className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
-      <h1 className="text-3xl font-bold mb-4">{singleIssue.title}</h1>
+      <h1
+        className="text-xl font-bold tracking-tight text-gray-900 
+      line-clamp-2 leading-tight 
+      group-hover:text-blue-600 transition-colors"
+      >
+        {singleIssue.title}
+      </h1>
 
       <div className="aspect-video w-full overflow-hidden rounded-lg mb-6">
         <LocationPicker
@@ -54,7 +60,30 @@ const SingleIssueContent = ({ issueId }: SingleIssueContentProps) => {
         {singleIssue.description}
       </p>
 
-      <div className="text-center border-t border-gray-200 pt-4">
+      <div className="flex justify-between items-center border-t border-gray-200 pt-4">
+        <div className="flex items-center space-x-4">
+          {singleIssue.user.profileImage && (
+            <img
+              src={singleIssue.user.profileImage}
+              alt="User profile"
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          )}
+          <span
+            className={`
+              px-3 py-1 rounded-full text-sm font-medium
+              ${
+                singleIssue.status === 'open'
+                  ? 'bg-green-100 text-green-800'
+                  : singleIssue.status === 'in-progress'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
+              }
+            `}
+          >
+            {singleIssue.status}
+          </span>
+        </div>
         <p className="text-sm text-gray-500">
           {formatDate(singleIssue.createdAt)}
         </p>

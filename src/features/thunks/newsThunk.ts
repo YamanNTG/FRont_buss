@@ -42,15 +42,25 @@ export const createNews = createAsyncThunk<any, CreateNewsData>(
 interface NewsResponse {
   news: NewsItem[];
   count: number;
+  currentPage: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+interface GetAllNewsParams {
+  page?: number;
+  limit?: number;
 }
 
 export const getAllNews = createAsyncThunk<
-  NewsResponse, // What the thunk returns on success
-  void, // First argument type (none in this case)
+  NewsResponse,
+  GetAllNewsParams, // What the thunk returns on success
   { rejectValue: string } // Configuration including rejectValue type
->('news/getAllNews', async (_, { rejectWithValue }) => {
+>('news/getAllNews', async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
   try {
-    const response = await customFetch.get('/api/v1/news');
+    const response = await customFetch.get(
+      `/api/v1/news?page=${page}&limit=${limit}`,
+    );
     return response.data;
   } catch (error) {
     if (error instanceof AxiosError) {

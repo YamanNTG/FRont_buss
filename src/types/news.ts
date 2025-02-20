@@ -10,6 +10,9 @@ export type NewsItem = {
 export type NewsState = {
   news: NewsItem[];
   count: number;
+  currentPage: number;
+  totalPages: number;
+  hasMore: boolean;
   isLoading: boolean;
   error: string | null;
   image: string;

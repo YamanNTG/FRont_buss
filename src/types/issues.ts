@@ -7,13 +7,20 @@ export type IssuesItem = {
     lat: number;
     lng: number;
   };
-  user: string;
+  user: {
+    _id: string;
+    name: string;
+    profileImage: string;
+  };
   createdAt: Date;
 };
 
 export type IssuesState = {
   issues: IssuesItem[];
   count: number;
+  currentPage: number;
+  totalPages: number;
+  hasMore: boolean;
   isLoading: boolean;
   error: string | null;
   singleIssue: IssuesItem | null;

@@ -11,6 +11,9 @@ import {
 const initialState: NewsState = {
   news: [],
   count: 0,
+  currentPage: 0,
+  totalPages: 0,
+  hasMore: false,
   isLoading: false,
   error: null,
   image: '',
@@ -59,8 +62,15 @@ const newsSlice = createSlice({
       })
       .addCase(getAllNews.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.news = action.payload.news;
+        if (action.payload.currentPage === 1) {
+          state.news = action.payload.news;
+        } else {
+          state.news = [...state.news, ...action.payload.news];
+        }
         state.count = action.payload.count;
+        state.currentPage = action.payload.currentPage;
+        state.totalPages = action.payload.totalPages;
+        state.hasMore = action.payload.hasMore;
       })
       .addCase(getAllNews.rejected, (state, action) => {
         state.isLoading = false;

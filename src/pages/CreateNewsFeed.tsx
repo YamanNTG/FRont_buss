@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { uploadFile, createNews } from '@/features/thunks/newsThunk';
 import ImageInput from '../components/form/ImageInput';
 import { useEffect } from 'react';
+import { createNewsSchema } from '@/utils/schemas';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
 const CreateNewsFeed = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,7 +28,7 @@ const CreateNewsFeed = () => {
 
     try {
       // Get the base news data first
-      let newsData: {
+      let newsInitialData: {
         title: string;
         description: string;
         image?: string;
@@ -38,14 +41,30 @@ const CreateNewsFeed = () => {
       if (image && image.size > 0) {
         // Only upload and add image if one was provided
         const uploadResponse = await dispatch(uploadFile(image)).unwrap();
-        newsData['image'] = uploadResponse.image;
+        newsInitialData['image'] = uploadResponse.image;
       }
-
+      const newsData = createNewsSchema.parse(newsInitialData);
       // Create the news with or without image
       await dispatch(createNews(newsData)).unwrap();
       navigate('/');
     } catch (error) {
-      console.error('Operation failed:', error);
+      if (error instanceof z.ZodError) {
+        // Combine all error messages
+        const errorMessages = error.errors.map((err) => err.message).join(', ');
+
+        toast.error(errorMessages, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else {
+        // Handle other types of errors
+        toast.error('An unexpected error occurred');
+        console.error('Operation failed:', error);
+      }
     }
   };
 

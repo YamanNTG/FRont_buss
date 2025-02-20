@@ -25,7 +25,7 @@ const Navbar = () => {
     { name: 'News', path: '/' },
     { name: 'Safety', path: '/safety' },
     { name: 'Swaps', path: '/swaps' },
-    { name: 'Users', path: '/users' },
+    ...(user?.role === 'admin' ? [{ name: 'Users', path: '/users' }] : []),
   ];
 
   const handleLogout = async () => {

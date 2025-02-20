@@ -10,6 +10,9 @@ import {
 const initialState: IssuesState = {
   issues: [],
   count: 0,
+  currentPage: 0,
+  totalPages: 0,
+  hasMore: false,
   isLoading: false,
   error: null,
   singleIssue: null,
@@ -44,8 +47,15 @@ const issuesSlice = createSlice({
       })
       .addCase(getAllIssues.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.issues = action.payload.issues;
+        if (action.payload.currentPage === 1) {
+          state.issues = action.payload.issues;
+        } else {
+          state.issues = [...state.issues, ...action.payload.issues];
+        }
         state.count = action.payload.count;
+        state.currentPage = action.payload.currentPage;
+        state.totalPages = action.payload.totalPages;
+        state.hasMore = action.payload.hasMore;
       })
       .addCase(getAllIssues.rejected, (state, action) => {
         state.isLoading = false;
@@ -73,13 +83,20 @@ const issuesSlice = createSlice({
       })
       .addCase(updateIssue.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.singleIssue = action.payload.issues;
-        // Update the issue in the list if it exists
-        const index = state.issues.findIndex(
-          (item) => item._id === action.payload.issues._id,
-        );
-        if (index !== -1) {
-          state.issues[index] = action.payload.issues;
+        if (action.payload) {
+          state.singleIssue = action.payload;
+          // Update the issue in the list if it exists
+          const index = state.issues.findIndex(
+            (item) => item._id === action.payload._id,
+          );
+          if (index !== -1) {
+            state.issues[index] = action.payload;
+          }
+        } else {
+          console.error(
+            'Expected issue in payload, but it was undefined:',
+            action.payload,
+          );
         }
       })
       .addCase(updateIssue.rejected, (state, action) => {

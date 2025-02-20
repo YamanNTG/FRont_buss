@@ -20,25 +20,38 @@ export const createIssue = createAsyncThunk<any, CreateIssuesData>(
 interface IssuesResponse {
   issues: IssuesItem[];
   count: number;
+  currentPage: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+interface GetAllIssuesParams {
+  page?: number;
+  limit?: number;
 }
 
 export const getAllIssues = createAsyncThunk<
   IssuesResponse, // What the thunk returns on success
-  void, // First argument type (none in this case)
+  GetAllIssuesParams, // First argument type (none in this case)
   { rejectValue: string } // Configuration including rejectValue type
->('issues/getAllIssues', async (_, { rejectWithValue }) => {
-  try {
-    const response = await customFetch.get('/api/v1/issues');
-    return response.data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      return rejectWithValue(
-        error.response?.data?.msg || 'Get All Issues Failed',
+>(
+  'issues/getAllIssues',
+  async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
+    try {
+      const response = await customFetch.get(
+        `/api/v1/issues?page=${page}&limit=${limit}`,
       );
+      return response.data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return rejectWithValue(
+          error.response?.data?.msg || 'Get All Issues Failed',
+        );
+      }
+      return rejectWithValue('An unexpected error occurred');
     }
-    return rejectWithValue('An unexpected error occurred');
-  }
-});
+  },
+);
 
 type DeleteIssuesResponse = {
   msg: string;
@@ -81,7 +94,7 @@ export const getSingleIssue = createAsyncThunk<
 });
 
 export const updateIssue = createAsyncThunk<
-  { issues: IssuesItem },
+  IssuesItem,
   { issueId: string; issueData: Partial<IssuesItem> },
   { rejectValue: string }
 >('issues/updateIssue', async ({ issueId, issueData }, { rejectWithValue }) => {
@@ -90,7 +103,7 @@ export const updateIssue = createAsyncThunk<
       `/api/v1/issues/${issueId}`,
       issueData,
     );
-    return response.data;
+    return response.data.issue;
   } catch (error) {
     if (error instanceof AxiosError) {
       return rejectWithValue(

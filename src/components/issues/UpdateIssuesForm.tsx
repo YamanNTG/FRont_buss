@@ -8,10 +8,9 @@ import LocationPicker from '../issues/LocationPicker';
 
 interface UpdateIssueFormProps {
   issueId: string;
-  onSuccess?: () => void;
 }
 
-const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
+const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -26,7 +25,7 @@ const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
   }
 
   const dispatch = useDispatch();
-  const { singleIssue, isLoading } = useSelector((state) => state.issues);
+  const { singleIssue } = useSelector((state) => state.issues);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -35,6 +34,7 @@ const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
       lat: 53.3498,
       lng: -6.2603,
     },
+    status: 'open',
   });
 
   useEffect(() => {
@@ -46,12 +46,15 @@ const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
           lat: singleIssue.location.lat,
           lng: singleIssue.location.lng,
         },
+        status: singleIssue.status,
       });
     }
   }, [singleIssue]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -78,16 +81,21 @@ const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
           lat: formData.location.lat,
           lng: formData.location.lng,
         },
+        status: formData.status,
       };
 
-      await dispatch(
+      const result = await dispatch(
         updateIssue({
           issueId,
           issueData,
         }),
       ).unwrap();
 
-      navigate(`/safety`);
+      if (result) {
+        navigate(`/safety`);
+      } else {
+        console.error('Update returned undefined result');
+      }
     } catch (error) {
       console.error('Failed to update issue:', error);
     }
@@ -149,6 +157,54 @@ const UpdateIssueForm = ({ issueId, onSuccess }: UpdateIssueFormProps) => {
                          focus:border-blue-500 transition-colors
                          text-sm md:text-base resize-y min-h-[120px]"
               />
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="status"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Status
+              </label>
+              <div className="relative">
+                <select
+                  id="status"
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="w-full p-3 pr-10 rounded-md border border-gray-300 
+               shadow-sm focus:ring-2 focus:ring-blue-500 
+               focus:border-blue-500 transition-colors
+               text-sm md:text-base appearance-none"
+                  style={{
+                    backgroundColor:
+                      formData.status === 'open'
+                        ? '#dcfce7'
+                        : formData.status === 'in-progress'
+                          ? '#fef9c3'
+                          : '#fee2e2',
+                    color:
+                      formData.status === 'open'
+                        ? '#166534'
+                        : formData.status === 'in-progress'
+                          ? '#854d0e'
+                          : '#991b1b',
+                  }}
+                >
+                  <option value="open" className="bg-green-100 text-green-800">
+                    Open
+                  </option>
+                  <option
+                    value="in-progress"
+                    className="bg-yellow-100 text-yellow-800"
+                  >
+                    In Progress
+                  </option>
+                  <option value="resolved" className="bg-red-100 text-red-800">
+                    Resolved
+                  </option>
+                </select>
+              </div>
             </div>
 
             <div className="space-y-2">

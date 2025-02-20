@@ -29,7 +29,13 @@ const SingleNewsContent = ({ newsId }: SingleNewsContentProps) => {
 
   return (
     <article className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md">
-      <h1 className="text-3xl font-bold mb-4">{singleNews.title}</h1>
+      <h1
+        className="text-xl font-bold tracking-tight text-gray-900 
+      line-clamp-2 leading-tight 
+      group-hover:text-blue-600 transition-colors"
+      >
+        {singleNews.title}
+      </h1>
       {singleNews.image && (
         <div className="aspect-video w-full overflow-hidden rounded-lg mb-6">
           <img
