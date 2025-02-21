@@ -32,9 +32,7 @@ const Issues = () => {
   };
 
   useEffect(() => {
-    if (issues.length === 0) {
-      dispatch(getAllIssues({ page: 1 }));
-    }
+    dispatch(getAllIssues({ page: 1 }));
   }, []);
 
   if (count === 0 && !isLoading) {

@@ -45,11 +45,21 @@ export const resetPasswordSchema = z.object({
 export const createNewsSchema = z.object({
   title: z
     .string()
-    .min(3, 'Title must be at least 3 characters')
+
     .max(100, "Title can't exceed 100 characters"),
   description: z
     .string()
-    .min(20, 'Description must be at least 20 characters')
+
     .max(2000, "Description can't exceed 2000 characters"),
   image: z.string().optional(),
+});
+export const createIssuesSchema = z.object({
+  title: z
+    .string()
+
+    .max(100, "Title can't exceed 100 characters"),
+  description: z
+    .string()
+
+    .max(2000, "Description can't exceed 2000 characters"),
 });

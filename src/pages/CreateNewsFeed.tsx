@@ -46,7 +46,17 @@ const CreateNewsFeed = () => {
       const newsData = createNewsSchema.parse(newsInitialData);
       // Create the news with or without image
       await dispatch(createNews(newsData)).unwrap();
-      navigate('/');
+      toast.success('News article created!', {
+        position: 'top-center',
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 1600);
     } catch (error) {
       if (error instanceof z.ZodError) {
         // Combine all error messages

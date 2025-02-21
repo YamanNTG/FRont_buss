@@ -32,9 +32,7 @@ function NewsFeed() {
   };
 
   useEffect(() => {
-    if (news.length === 0) {
-      dispatch(getAllNews({ page: 1 }));
-    }
+    dispatch(getAllNews({ page: 1 }));
   }, []);
 
   if (count === 0 && !isLoading) {
@@ -48,10 +46,7 @@ function NewsFeed() {
         </h3>
         {user?.role === 'admin' && (
           <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate('/create-news');
-            }}
+            onClick={() => navigate('/create-news')}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all"
           >
             Create News

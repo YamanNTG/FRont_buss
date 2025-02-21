@@ -7,7 +7,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { createIssue } from '../features/thunks/issuesThunk';
 import { LocationPicker } from '../components';
-
+import { toast } from 'react-toastify';
+import { createIssuesSchema } from '@/utils/schemas';
+import { z } from 'zod';
 interface IssueData {
   title: string;
   description: string;
@@ -53,11 +55,41 @@ const CreateIssue = () => {
     e.preventDefault();
 
     try {
+      const validatedData = createIssuesSchema.parse({
+        title: issueData.title,
+        description: issueData.description,
+      });
+
       await dispatch(createIssue(issueData)).unwrap();
-      navigate('/safety');
+      toast.success('Issue created!', {
+        position: 'top-center',
+        autoClose: 1500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      setTimeout(() => {
+        navigate('/safety');
+      }, 3000);
     } catch (error) {
-      console.error('Error creating issue:', error);
-      // You might want to add proper error handling here
+      if (error instanceof z.ZodError) {
+        // Combine all error messages
+        const errorMessages = error.errors.map((err) => err.message).join(', ');
+
+        toast.error(errorMessages, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } else {
+        // Handle other types of errors
+        toast.error('An unexpected error occurred');
+        console.error('Operation failed:', error);
+      }
     }
   };
 
