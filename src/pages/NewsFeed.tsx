@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { formatDate } from '@/utils/formatDate';
 import { NewsItem } from '@/types/news';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import useNewsSocket from '../utils/useNewsSocket';
 
 interface NewsState {
   news: NewsItem[];
@@ -25,6 +26,9 @@ function NewsFeed() {
     (state) => state.news as NewsState,
   );
 
+  // Use the news socket hook for real-time updates
+  const { isConnected, socketId } = useNewsSocket();
+
   const loadMoreNews = () => {
     if (!isLoading && hasMore) {
       dispatch(getAllNews({ page: currentPage + 1 }));
@@ -33,7 +37,15 @@ function NewsFeed() {
 
   useEffect(() => {
     dispatch(getAllNews({ page: 1 }));
-  }, []);
+
+    // Log socket connection status
+    if (isConnected) {
+      console.log(
+        'News feed connected to real-time updates, socket ID:',
+        socketId,
+      );
+    }
+  }, [dispatch, isConnected, socketId]);
 
   if (count === 0 && !isLoading) {
     return (
@@ -46,7 +58,7 @@ function NewsFeed() {
         </h3>
         {user?.role === 'admin' && (
           <Button
-            onClick={() => navigate('/create-news')}
+            onClick={() => navigate('/createNews')}
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all"
           >
             Create News
@@ -62,6 +74,14 @@ function NewsFeed() {
         <h1 className="text-4xl font-bold tracking-tight text-gray-900">
           News Feed
         </h1>
+
+        {/* Optional real-time indicator */}
+        {isConnected && (
+          <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+            Real-time updates active
+          </div>
+        )}
+
         {user?.role === 'admin' && (
           <Button
             onClick={() => navigate('/createNews')}

@@ -3,9 +3,6 @@ import './index.css';
 import App from './App.tsx';
 import { Provider } from 'react-redux';
 import { store } from './store.ts';
-import { registerServiceWorker } from '../registerSW.ts';
-
-registerServiceWorker();
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>

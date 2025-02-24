@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { getAllIssues } from '@/features/thunks/issuesThunk';
-import { IssuesItem } from '@/types/issues';
 import LocationPicker from '../components/issues/LocationPicker';
 import { formatDate } from '@/utils/formatDate';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import useIssuesSocket from '../utils/useIssueSocket';
+import { IssuesItem } from '@/types/issues';
 
 interface IssuesState {
   issues: IssuesItem[];
@@ -25,6 +26,9 @@ const Issues = () => {
     (state) => state.issues as IssuesState,
   );
 
+  // Use the specialized socket hook for issues
+  const { socket, isConnected, socketId } = useIssuesSocket();
+
   const loadMoreIssues = () => {
     if (!isLoading && hasMore) {
       dispatch(getAllIssues({ page: currentPage + 1 }));
@@ -32,8 +36,19 @@ const Issues = () => {
   };
 
   useEffect(() => {
+    // Initial fetch
     dispatch(getAllIssues({ page: 1 }));
-  }, []);
+
+    // Log socket connection status
+    if (isConnected) {
+      console.log('Connected to real-time updates, socket ID:', socketId);
+    }
+
+    // No cleanup needed as it's handled in the hook
+    return () => {
+      console.log('Component unmounting');
+    };
+  }, [dispatch, isConnected, socketId]);
 
   if (count === 0 && !isLoading) {
     return (
@@ -60,6 +75,12 @@ const Issues = () => {
         <h1 className="text-4xl font-bold tracking-tight text-gray-900">
           Safety Issues
         </h1>
+        {/* Optional real-time status indicator */}
+        {isConnected && (
+          <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+            Real-time updates active
+          </div>
+        )}
         <Button
           onClick={() => navigate('/createIssue')}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all"

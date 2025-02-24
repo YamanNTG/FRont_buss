@@ -20,13 +20,13 @@ import {
   Users,
   SingleIssue,
 } from './pages';
-
 import {
   ProtectedRoute,
   PublicOnlyRoute,
   ErrorElement,
   InstallPWA,
 } from './components';
+import { useEffect } from 'react';
 
 const router = createBrowserRouter([
   {
@@ -144,6 +144,7 @@ const App: React.FC = () => {
     <>
       <ToastContainer />
       <InstallPWA />
+
       <RouterProvider router={router} />
     </>
   );

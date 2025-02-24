@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IssuesState } from '@/types/issues';
 import {
   createIssue,
@@ -7,6 +7,7 @@ import {
   getSingleIssue,
   updateIssue,
 } from '../thunks/issuesThunk';
+
 const initialState: IssuesState = {
   issues: [],
   count: 0,
@@ -21,7 +22,55 @@ const initialState: IssuesState = {
 const issuesSlice = createSlice({
   name: 'issues',
   initialState,
-  reducers: {},
+  reducers: {
+    // Add socket action to handle real-time issue creation
+    addIssueFromSocket: (state, action: PayloadAction<any>) => {
+      const newIssue = action.payload.issue || action.payload;
+
+      // Check if issue already exists to prevent duplicates
+      const issueExists = state.issues.some(
+        (issue) => issue._id === newIssue._id,
+      );
+
+      if (!issueExists) {
+        // Add new issue to the beginning of the array
+        state.issues.unshift(newIssue);
+        state.count += 1;
+      }
+    },
+
+    // Add socket action to handle real-time issue updates
+    updateIssueFromSocket: (state, action: PayloadAction<any>) => {
+      const updatedIssue = action.payload.issue || action.payload;
+
+      // Update in the issues array if it exists
+      const index = state.issues.findIndex(
+        (issue) => issue._id === updatedIssue._id,
+      );
+      if (index !== -1) {
+        state.issues[index] = updatedIssue;
+      }
+
+      // Also update singleIssue if it's the same issue being viewed
+      if (state.singleIssue && state.singleIssue._id === updatedIssue._id) {
+        state.singleIssue = updatedIssue;
+      }
+    },
+
+    // Add socket action to handle real-time issue deletion
+    removeIssueFromSocket: (state, action: PayloadAction<string>) => {
+      const issueId = action.payload;
+
+      // Filter out the deleted issue
+      state.issues = state.issues.filter((issue) => issue._id !== issueId);
+      state.count -= 1;
+
+      // Clear singleIssue if it's the deleted issue
+      if (state.singleIssue && state.singleIssue._id === issueId) {
+        state.singleIssue = null;
+      }
+    },
+  },
   extraReducers(builder) {
     builder
 
@@ -118,5 +167,12 @@ const issuesSlice = createSlice({
       });
   },
 });
+
+// Export the new socket-related actions
+export const {
+  addIssueFromSocket,
+  updateIssueFromSocket,
+  removeIssueFromSocket,
+} = issuesSlice.actions;
 
 export default issuesSlice.reducer;
