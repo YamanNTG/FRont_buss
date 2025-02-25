@@ -10,7 +10,7 @@ import { LocationPicker } from '../components';
 import { toast } from 'react-toastify';
 import { createIssuesSchema } from '@/utils/schemas';
 import { z } from 'zod';
-// import { socketService } from '../services/socketService';
+
 interface IssueData {
   title: string;
   description: string;
