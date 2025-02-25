@@ -75,13 +75,6 @@ function NewsFeed() {
           News Feed
         </h1>
 
-        {/* Optional real-time indicator */}
-        {isConnected && (
-          <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-            Real-time updates active
-          </div>
-        )}
-
         {user?.role === 'admin' && (
           <Button
             onClick={() => navigate('/createNews')}
