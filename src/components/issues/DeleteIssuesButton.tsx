@@ -23,7 +23,7 @@ const DeleteIssueButton = ({ issueId }: DeleteIssueButtonProps) => {
     try {
       setIsDeleting(true);
       await dispatch(deleteIssue(issueId)).unwrap();
-      navigate('/');
+      navigate('/safety');
     } catch (error) {
       console.log(error);
       alert('Failed to delete issue');
