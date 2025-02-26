@@ -69,7 +69,9 @@ const Issues = () => {
     );
   }
   const openIssues = issues.filter((issue) => issue.status === 'open');
-  const ongoingIssues = issues.filter((issue) => issue.status === 'on-going');
+  const ongoingIssues = issues.filter(
+    (issue) => issue.status === 'in-progress',
+  );
   const resolvedIssues = issues.filter((issue) => issue.status === 'resolved');
   return (
     <div className="container mx-auto px-4 py-8">
@@ -105,7 +107,7 @@ const Issues = () => {
             <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-blue-50 p-4 rounded-lg">
                 <h3 className="font-semibold text-blue-700">
-                  Open and On-Going issues
+                  Open and In-Progress issues
                 </h3>
                 <p className="text-2xl font-bold text-blue-900">
                   {openIssues.length + ongoingIssues.length}
@@ -132,7 +134,7 @@ const Issues = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {issues
                   .filter((issue: IssuesItem) =>
-                    ['open', 'on-going'].includes(issue.status),
+                    ['open', 'in-progress'].includes(issue.status),
                   )
                   .map((issue) => (
                     <Card
@@ -201,7 +203,7 @@ const Issues = () => {
                             className={`text-sm font-medium px-2 py-1 rounded-full ${
                               issue.status === 'open'
                                 ? 'bg-blue-100 text-blue-800'
-                                : issue.status === 'on-going'
+                                : issue.status === 'in-progress'
                                   ? 'bg-yellow-100 text-yellow-800'
                                   : issue.status === 'resolved'
                                     ? 'bg-green-100 text-green-800'

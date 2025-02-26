@@ -34,7 +34,7 @@ const IssuesMap: React.FC<IssuesMapProps> = ({
 
   // Filter only open and ongoing issues
   const activeIssues = issues.filter(
-    (issue) => ['open', 'on-going'].includes(issue.status) && issue.location,
+    (issue) => ['open', 'in-progress'].includes(issue.status) && issue.location,
   );
 
   // Calculate map center
@@ -165,7 +165,7 @@ const IssuesMap: React.FC<IssuesMapProps> = ({
                   className={`text-sm font-medium px-2 py-1 rounded-full ${
                     selectedIssue.status === 'open'
                       ? 'bg-blue-100 text-blue-800'
-                      : selectedIssue.status === 'on-going'
+                      : selectedIssue.status === 'in-progress'
                         ? 'bg-yellow-100 text-yellow-800'
                         : 'bg-gray-100 text-gray-800'
                   }`}

@@ -180,19 +180,19 @@ const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
                   style={{
                     backgroundColor:
                       formData.status === 'open'
-                        ? '#dcfce7'
+                        ? '#dbeafe' // blue-100
                         : formData.status === 'in-progress'
-                          ? '#fef9c3'
-                          : '#fee2e2',
+                          ? '#fef9c3' // yellow-100
+                          : '#dcfce7', // green-100
                     color:
                       formData.status === 'open'
-                        ? '#166534'
+                        ? '#1e40af' // blue-800
                         : formData.status === 'in-progress'
-                          ? '#854d0e'
-                          : '#991b1b',
+                          ? '#854d0e' // yellow-800
+                          : '#166534', // green-800
                   }}
                 >
-                  <option value="open" className="bg-green-100 text-green-800">
+                  <option value="open" className="bg-blue-100 text-blue-800">
                     Open
                   </option>
                   <option
@@ -201,7 +201,10 @@ const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
                   >
                     In Progress
                   </option>
-                  <option value="resolved" className="bg-red-100 text-red-800">
+                  <option
+                    value="resolved"
+                    className="bg-green-100 text-green-800"
+                  >
                     Resolved
                   </option>
                 </select>
