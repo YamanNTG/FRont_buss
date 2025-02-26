@@ -8,6 +8,7 @@ import LocationPicker from '../issues/LocationPicker';
 
 interface UpdateIssueFormProps {
   issueId: string;
+  onSuccess?: () => void;
 }
 
 const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {

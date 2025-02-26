@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from '@/utils/hooks';
 import { deleteNews } from '@/features/thunks/newsThunk';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 
 interface DeleteNewsButtonProps {
   newsId: string;
@@ -23,6 +24,14 @@ const DeleteNewsButton = ({ newsId }: DeleteNewsButtonProps) => {
     try {
       setIsDeleting(true);
       await dispatch(deleteNews(newsId)).unwrap();
+      toast.success('Article deleted!', {
+        position: 'top-center',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       navigate('/');
     } catch (error) {
       console.log(error);
