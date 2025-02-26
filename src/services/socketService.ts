@@ -5,7 +5,7 @@ let socket: Socket | null = null;
 // Function to initialize the socket connection
 export const initializeSocket = (): Socket => {
   if (!socket) {
-    socket = io(import.meta.env.VITE_HEROKU_URL, {
+    socket = io(process.env.VITE_HEROKU_URL, {
       transports: ['websocket'],
       reconnection: true,
     });

@@ -16,7 +16,11 @@ const UpdateUserPassword = () => {
     try {
       const oldPassword = formData.get('oldPassword') as string;
       const newPassword = formData.get('newPassword') as string;
-
+      const retypePassword = formData.get('retypePassword') as string;
+      if (newPassword !== retypePassword) {
+        toast.warning('New password does not match Retype Password');
+        return;
+      }
       await dispatch(
         updatePassword({
           oldPassword,
@@ -57,11 +61,16 @@ const UpdateUserPassword = () => {
               label="Old Password"
               name="oldPassword"
             />
-
+            <div className="pt-4 sm:pt-6 border-t border-gray-200"></div>
             <FormInput
               type="password"
               label="New Password"
               name="newPassword"
+            />
+            <FormInput
+              type="password"
+              label="Retype Password"
+              name="retypePassword"
             />
           </div>
 

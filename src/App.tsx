@@ -70,11 +70,6 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />,
       },
       {
-        path: 'swaps',
-        element: <HolidaySwap />,
-        errorElement: <ErrorElement />,
-      },
-      {
         path: 'users',
         element: <Users />,
         errorElement: <ErrorElement />,

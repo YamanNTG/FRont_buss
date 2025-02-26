@@ -2,7 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { getSingleIssue } from '@/features/thunks/issuesThunk';
 import { formatDate } from '@/utils/formatDate';
-import LocationPicker from './LocationPicker';
+
+import LocationViewer from './LocationViewer';
 
 interface SingleIssueContentProps {
   issueId: string;
@@ -46,13 +47,14 @@ const SingleIssueContent = ({ issueId }: SingleIssueContentProps) => {
       </h1>
 
       <div className="aspect-video w-full overflow-hidden rounded-lg mb-6">
-        <LocationPicker
-          isPinDraggable={false}
-          onLocationSelect={() => {}} // No-op for display mode
-          initialLocation={{
+        <LocationViewer
+          location={{
             lat: locationToUse.lat,
             lng: locationToUse.lng,
           }}
+          defaultLocation={{ lat: 53.3498, lng: -6.2603 }}
+          hideDefaultLocationMarker={true}
+          showCurrentLocation={true}
         />
       </div>
 
@@ -62,15 +64,25 @@ const SingleIssueContent = ({ issueId }: SingleIssueContentProps) => {
 
       <div className="flex justify-between items-center border-t border-gray-200 pt-4">
         <div className="flex items-center space-x-4">
-          {singleIssue.user.profileImage && (
+          {
             <img
-              src={singleIssue.user.profileImage}
+              src={
+                singleIssue.user?.profileImage
+                  ? singleIssue.user.profileImage
+                  : 'https://res.cloudinary.com/dzilw7kgd/image/upload/v1740485864/TransitTask-Assets/tmp-3-1740485864487_sdmyhn.png'
+              }
               alt="User profile"
               className="w-10 h-10 rounded-full object-cover"
             />
-          )}
-          <span
-            className={`
+          }
+          {
+            <span className="text-sm text-gray-600">
+              {singleIssue.user?.name || 'Anonymous'}
+            </span>
+          }
+        </div>
+        <span
+          className={`
               px-3 py-1 rounded-full text-sm font-medium
               ${
                 singleIssue.status === 'open'
@@ -80,10 +92,9 @@ const SingleIssueContent = ({ issueId }: SingleIssueContentProps) => {
                     : 'bg-red-100 text-red-800'
               }
             `}
-          >
-            {singleIssue.status}
-          </span>
-        </div>
+        >
+          {singleIssue.status}
+        </span>
         <p className="text-sm text-gray-500">
           {formatDate(singleIssue.createdAt)}
         </p>

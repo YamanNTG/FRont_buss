@@ -24,7 +24,6 @@ const Navbar = () => {
   const navItems: NavItem[] = [
     { name: 'News', path: '/' },
     { name: 'Safety', path: '/safety' },
-    { name: 'Swaps', path: '/swaps' },
     ...(user?.role === 'admin' ? [{ name: 'Users', path: '/users' }] : []),
   ];
 
@@ -99,7 +98,13 @@ const Navbar = () => {
               Logout
             </button>
           </div>
-
+          {/* Mobile create issue button */}
+          <Button
+            onClick={() => navigate('/createIssue')}
+            className="bg-blue-600 hover:bg-blue-700 text-white md:hidden font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all"
+          >
+            Create Issue
+          </Button>
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -140,19 +145,6 @@ const Navbar = () => {
                 </Link>
               ))}
             </div>
-
-            {/* Mobile Create Issue Link */}
-            <Link
-              to="/createIssue"
-              onClick={() => setIsMenuOpen(false)}
-              className={`mt-3 flex items-center justify-center w-full px-3 py-2 rounded-md transition-colors duration-200 ${
-                location.pathname === '/createIssue'
-                  ? 'bg-primary/10 text-primary font-semibold'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-              }`}
-            >
-              <FaPlus className="h-5 w-5 mr-2 text-primary text-primary-600" />
-            </Link>
 
             {/* Mobile Profile Link */}
             <Link
