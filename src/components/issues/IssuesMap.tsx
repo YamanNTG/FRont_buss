@@ -27,7 +27,7 @@ const IssuesMap: React.FC<IssuesMapProps> = ({
   const [currentUserLocation, setCurrentUserLocation] = useState<{
     lat: number;
     lng: number;
-  } | null>(null);
+  }>();
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [selectedIssue, setSelectedIssue] = useState<IssuesItem | null>(null);
@@ -39,7 +39,7 @@ const IssuesMap: React.FC<IssuesMapProps> = ({
 
   // Calculate map center
   const center = (() => {
-    return { lat: 53.3498, lng: -6.2603 }; // Default to Dublin
+    return currentUserLocation; // Default to Dublin
   })();
 
   // Get user's current location

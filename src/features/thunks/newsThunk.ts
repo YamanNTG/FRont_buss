@@ -54,7 +54,7 @@ interface GetAllNewsParams {
 
 export const getAllNews = createAsyncThunk<
   NewsResponse,
-  GetAllNewsParams, // What the thunk returns on success
+  GetAllNewsParams,
   { rejectValue: string } // Configuration including rejectValue type
 >('news/getAllNews', async ({ page = 1, limit = 10 }, { rejectWithValue }) => {
   try {

@@ -53,13 +53,36 @@ export const getAllIssues = createAsyncThunk<
   },
 );
 
+type getActiveIssuesResponse = {
+  totalActiveIssues: number;
+  totalResolvedIssues: number;
+};
+
+export const getActiveIssues = createAsyncThunk<
+  getActiveIssuesResponse, // What the thunk returns on success
+  void,
+  { rejectValue: string } // Configuration including rejectValue type
+>('issues/getActiveIssues', async (_, { rejectWithValue }) => {
+  try {
+    const response = await customFetch.get('/api/v1/issues/getActiveIssues');
+    return response.data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return rejectWithValue(
+        error.response?.data?.msg || 'Get All Active Issues Failed',
+      );
+    }
+    return rejectWithValue('An unexpected error occurred');
+  }
+});
+
 type DeleteIssuesResponse = {
   msg: string;
 };
 
 export const deleteIssue = createAsyncThunk<
   DeleteIssuesResponse, // What the thunk returns on success
-  string, // First argument type (none in this case)
+  string, // First argument type
   { rejectValue: string } // Configuration including rejectValue type
 >('issues/deleteIssues', async (issueId, { rejectWithValue }) => {
   try {

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDispatch, useSelector } from '@/utils/hooks';
-import { getAllIssues } from '@/features/thunks/issuesThunk';
+import { getAllIssues, getActiveIssues } from '@/features/thunks/issuesThunk';
 import IssuesMap from '../components/issues/IssuesMap';
 import LocationViewer from '@/components/issues/LocationViewer';
 import { formatDate } from '@/utils/formatDate';
@@ -19,14 +19,22 @@ interface IssuesState {
   totalPages: number;
   hasMore: boolean;
   isLoading: boolean;
+  activeIssuesCount: number;
+  resolvedIssuesCount: number;
 }
 
 const Issues = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { issues, count, currentPage, hasMore, isLoading } = useSelector(
-    (state) => state.issues as IssuesState,
-  );
+  const {
+    issues,
+    count,
+    currentPage,
+    hasMore,
+    isLoading,
+    activeIssuesCount,
+    resolvedIssuesCount,
+  } = useSelector((state) => state.issues as IssuesState);
 
   // Use the specialized socket hook for issues
   const { socket, isConnected, socketId } = useIssuesSocket();
@@ -39,6 +47,7 @@ const Issues = () => {
 
   useEffect(() => {
     // Initial fetch
+    dispatch(getActiveIssues());
     dispatch(getAllIssues({ page: 1 }));
 
     if (isConnected) {
@@ -110,7 +119,7 @@ const Issues = () => {
                   Open and In-Progress issues
                 </h3>
                 <p className="text-2xl font-bold text-blue-900">
-                  {openIssues.length + ongoingIssues.length}
+                  {activeIssuesCount}
                 </p>
               </div>
               <div className="bg-purple-50 p-4 rounded-lg">
@@ -118,7 +127,7 @@ const Issues = () => {
                   Resolved issues
                 </h3>
                 <p className="text-2xl font-bold text-purple-900">
-                  {resolvedIssues.length}
+                  {resolvedIssuesCount}
                 </p>
               </div>
             </div>

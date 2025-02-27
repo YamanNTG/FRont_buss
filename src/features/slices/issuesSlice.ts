@@ -6,6 +6,7 @@ import {
   deleteIssue,
   getSingleIssue,
   updateIssue,
+  getActiveIssues,
 } from '../thunks/issuesThunk';
 
 const initialState: IssuesState = {
@@ -17,6 +18,8 @@ const initialState: IssuesState = {
   isLoading: false,
   error: null,
   singleIssue: null,
+  activeIssuesCount: 0,
+  resolvedIssuesCount: 0,
 };
 
 const issuesSlice = createSlice({
@@ -107,6 +110,21 @@ const issuesSlice = createSlice({
         state.hasMore = action.payload.hasMore;
       })
       .addCase(getAllIssues.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message ?? 'An error occurred';
+      })
+
+      // Get All Active Issues cases
+      .addCase(getActiveIssues.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getActiveIssues.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.activeIssuesCount = action.payload.totalActiveIssues;
+        state.resolvedIssuesCount = action.payload.totalResolvedIssues;
+      })
+      .addCase(getActiveIssues.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       })

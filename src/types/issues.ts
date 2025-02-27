@@ -24,6 +24,8 @@ export type IssuesState = {
   isLoading: boolean;
   error: string | null;
   singleIssue: IssuesItem | null;
+  activeIssuesCount: number;
+  resolvedIssuesCount: number;
 };
 
 export type CreateIssuesData = {
