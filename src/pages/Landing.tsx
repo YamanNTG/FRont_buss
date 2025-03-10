@@ -33,6 +33,10 @@ const Landing = () => {
               swaps and holiday requests—all in one intuitive interface. Making
               transit management simpler, safer, and more efficient.
             </p>
+            <p className="text-2xl text-red-500">
+              Registration is possible only via invitation from the organization
+              admin
+            </p>
             {/*Button layout */}
             <div className="flex flex-col space-y-4 w-full">
               <Button
@@ -40,12 +44,6 @@ const Landing = () => {
                 className=" bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
               >
                 <Link to="/login">Sign In</Link>
-              </Button>
-              <Button
-                asChild
-                className="bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
-              >
-                <Link to="/register">Register</Link>
               </Button>
             </div>
           </div>
