@@ -47,34 +47,17 @@ function NewsFeed() {
     }
   }, [dispatch, isConnected, socketId]);
 
-  if (count === 0 && !isLoading) {
-    return (
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-          News Feed
-        </h1>
-        <h3 className="text-2xl font-medium text-gray-600">
-          There are no news to display...
-        </h3>
-        {user?.role === 'admin' && (
-          <Button
-            onClick={() => navigate('/createNews')}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:shadow-lg transition-all"
-          >
-            Create News
-          </Button>
-        )}
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900">
           News Feed
         </h1>
-
+        {count === 0 && !isLoading && (
+          <h3 className="text-2xl font-medium text-gray-600">
+            There are no news to display...
+          </h3>
+        )}
         {user?.role === 'admin' && (
           <Button
             onClick={() => navigate('/createNews')}
