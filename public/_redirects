@@ -1,5 +1,3 @@
-
-
 /api/*  https://dbuss-api-025-8594a98bd0c9.herokuapp.com/api/:splat  200
 
 /* /index.html 200

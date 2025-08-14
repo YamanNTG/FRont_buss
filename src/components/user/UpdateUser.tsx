@@ -1,15 +1,14 @@
-import { uploadFile } from '@/features/thunks/newsThunk';
 import { updateProfile } from '@/features/thunks/userThunk';
 import { useDispatch, useSelector } from '@/utils/hooks';
 import { FormInput, SubmitBtn, ImageInput } from '@/components/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNewsStore } from '@/store/news';
 
 const UpdateProfile = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { uploadFile } = useNewsStore();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -21,10 +20,8 @@ const UpdateProfile = () => {
 
       const newProfileImage = formData.get('profileImage') as File;
       if (newProfileImage && newProfileImage.size > 0) {
-        const uploadResponse = await dispatch(
-          uploadFile(newProfileImage),
-        ).unwrap();
-        profileImage = uploadResponse.image;
+        await uploadFile(newProfileImage);
+        profileImage = useNewsStore.getState().image;
       }
 
       await dispatch(
