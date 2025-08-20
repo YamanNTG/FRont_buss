@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from '@/utils/hooks';
 import { FormInput, SubmitBtn, ImageInput } from '@/components/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'react-toastify';
-import { useNewsStore } from '@/store/news';
+import { useNewsActions } from '@/hooks/useNews';
 
 const UpdateProfile = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const { uploadFile } = useNewsStore();
+  const { uploadFile } = useNewsActions();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -20,8 +20,8 @@ const UpdateProfile = () => {
 
       const newProfileImage = formData.get('profileImage') as File;
       if (newProfileImage && newProfileImage.size > 0) {
-        await uploadFile(newProfileImage);
-        profileImage = useNewsStore.getState().image;
+        const response = await uploadFile(newProfileImage);
+        profileImage = response.image;
       }
 
       await dispatch(

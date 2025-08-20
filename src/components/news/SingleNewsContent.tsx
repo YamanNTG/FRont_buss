@@ -1,19 +1,12 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { getSingleNews } from '@/features/thunks/newsThunk';
 import { formatDate } from '@/utils/formatDate';
+import { useSingleNews } from '@/hooks/useNews';
 
 interface SingleNewsContentProps {
   newsId: string;
 }
 
 const SingleNewsContent = ({ newsId }: SingleNewsContentProps) => {
-  const dispatch = useDispatch();
-  const { singleNews, isLoading, error } = useSelector((state) => state.news);
-
-  useEffect(() => {
-    dispatch(getSingleNews(newsId));
-  }, [dispatch, newsId]);
+  const { singleNews, isLoading, error } = useSingleNews(newsId);
 
   if (isLoading) {
     return <div>Loading...</div>;

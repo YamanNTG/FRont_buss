@@ -1,17 +1,18 @@
 import { SubmitBtn } from '@/components/form';
-import { useDispatch, useSelector } from '@/utils/hooks';
+import { useSelector } from '@/utils/hooks';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
-import { uploadFile, createNews } from '@/features/thunks/newsThunk';
 import ImageInput from '../components/form/ImageInput';
 import { useEffect } from 'react';
 import { createNewsSchema } from '@/utils/schemas';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
+import { useNewsActions } from '@/hooks/useNews';
 const CreateNewsFeed = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const { uploadFile, createNews } = useNewsActions();
+
   const checkRole = async () => {
     if (user?.role !== 'admin') {
       navigate('/');
@@ -22,12 +23,14 @@ const CreateNewsFeed = () => {
   useEffect(() => {
     checkRole();
   }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     try {
       // Get the base news data first
+
       let newsInitialData: {
         title: string;
         description: string;
@@ -36,16 +39,21 @@ const CreateNewsFeed = () => {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
       };
+
       // Check if an image was provided
+
       const image = formData.get('image') as File;
       if (image && image.size > 0) {
         // Only upload and add image if one was provided
-        const uploadResponse = await dispatch(uploadFile(image)).unwrap();
-        newsInitialData['image'] = uploadResponse.image;
+        const response = await uploadFile(image);
+        newsInitialData['image'] = response.image;
       }
+
       const newsData = createNewsSchema.parse(newsInitialData);
+
       // Create the news with or without image
-      await dispatch(createNews(newsData)).unwrap();
+
+      await createNews(newsData);
       toast.success('News article created!', {
         position: 'top-center',
         autoClose: 1500,

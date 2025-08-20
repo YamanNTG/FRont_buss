@@ -1,11 +1,11 @@
 // src/components/UpdateNewsForm.tsx
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { updateNews, uploadFile } from '@/features/thunks/newsThunk';
+import { useSelector } from '@/utils/hooks';
 import { Card, CardContent } from '@/components/ui/card';
 import { SubmitBtn } from '@/components/form';
 import ImageInput from '@/components/form/ImageInput';
 import { useNavigate } from 'react-router-dom';
+import { useNewsActions, useSingleNews } from '@/hooks/useNews';
 
 interface UpdateNewsFormProps {
   newsId: string;
@@ -15,6 +15,9 @@ interface UpdateNewsFormProps {
 const UpdateNewsForm = ({ newsId, onSuccess }: UpdateNewsFormProps) => {
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const { uploadFile, updateNews } = useNewsActions();
+  const { singleNews } = useSingleNews();
+
   useEffect(() => {
     if (user?.role !== 'admin') {
       navigate('/news/' + newsId);
@@ -24,9 +27,6 @@ const UpdateNewsForm = ({ newsId, onSuccess }: UpdateNewsFormProps) => {
   if (user?.role !== 'admin') {
     return null;
   }
-
-  const dispatch = useDispatch();
-  const { singleNews, isLoading } = useSelector((state) => state.news);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -68,18 +68,13 @@ const UpdateNewsForm = ({ newsId, onSuccess }: UpdateNewsFormProps) => {
 
       const image = formData.get('image') as File;
       if (image && image.size > 0) {
-        const uploadResponse = await dispatch(uploadFile(image)).unwrap();
-        newsData['image'] = uploadResponse.image;
+        const response = await uploadFile(image);
+        newsData['image'] = response.image;
       } else {
         newsData['image'] = singleNews?.image || '';
       }
 
-      await dispatch(
-        updateNews({
-          newsId,
-          newsData,
-        }),
-      ).unwrap();
+      await updateNews(newsId, newsData);
 
       onSuccess?.();
     } catch (error) {

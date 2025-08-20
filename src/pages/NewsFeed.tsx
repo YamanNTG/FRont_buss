@@ -1,42 +1,31 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from '@/utils/hooks';
-import { getAllNews } from '@/features/thunks/newsThunk';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@/utils/formatDate';
-import { NewsItem } from '@/types/news';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useNewsSocket from '../utils/useNewsSocket';
-
-interface NewsState {
-  news: NewsItem[];
-  count: number;
-  currentPage: number;
-  totalPages: number;
-  hasMore: boolean;
-  isLoading: boolean;
-}
+import { useNewsActions, useNewsList } from '@/hooks/useNews';
 
 function NewsFeed() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
-  const { news, count, currentPage, hasMore, isLoading } = useSelector(
-    (state) => state.news as NewsState,
-  );
+  const { news, count, currentPage, hasMore, isLoading } = useNewsList();
+  const { getAllNews } = useNewsActions();
 
   // Use the news socket hook for real-time updates
   const { isConnected, socketId } = useNewsSocket();
 
-  const loadMoreNews = () => {
+  const loadMoreNews = async () => {
     if (!isLoading && hasMore) {
-      dispatch(getAllNews({ page: currentPage + 1 }));
+      getAllNews({ page: currentPage + 1 });
     }
   };
 
   useEffect(() => {
-    dispatch(getAllNews({ page: 1 }));
+    getAllNews({ page: 1 });
 
     // Log socket connection status
     if (isConnected) {
