@@ -37,8 +37,16 @@ export const useNewsList = () => {
 
 // News actions hook
 export const useNewsActions = () => {
-  const { createNews, updateNews, uploadFile, deleteNews, getAllNews } =
-    useNewsStore();
+  const {
+    createNews,
+    updateNews,
+    uploadFile,
+    deleteNews,
+    getAllNews,
+    addNewsFromSocket,
+    updateNewsFromSocket,
+    removeNewsFromSocket,
+  } = useNewsStore();
 
   return {
     createNews,
@@ -46,5 +54,8 @@ export const useNewsActions = () => {
     uploadFile,
     deleteNews,
     getAllNews,
+    addNewsFromSocket,
+    updateNewsFromSocket,
+    removeNewsFromSocket,
   };
 };

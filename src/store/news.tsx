@@ -26,7 +26,7 @@ interface NewsStore {
   image: string;
   msg: string;
   singleNews: NewsItem | null;
-  //--
+  // API actions
   uploadFile: (image: File) => Promise<{ image: string }>;
   createNews: (newsData: CreateNewsData) => Promise<NewsItem>;
   updateNews: (
@@ -36,6 +36,10 @@ interface NewsStore {
   getSingleNews: (newsId: string) => Promise<NewsItem>;
   deleteNews: (newsId: string) => Promise<{ msg: string }>;
   getAllNews: (params: GetAllNewsParams) => Promise<GetAllNewsResponse>;
+  // Socket actions
+  addNewsFromSocket: (newNews: NewsItem) => void;
+  updateNewsFromSocket: (updatedNews: NewsItem) => void;
+  removeNewsFromSocket: (newsId: string) => void;
 }
 
 export const useNewsStore = create<NewsStore>((set, get) => ({
@@ -175,5 +179,55 @@ export const useNewsStore = create<NewsStore>((set, get) => ({
           error instanceof Error ? error.message : 'Failed to get all news',
       });
     }
+  },
+  addNewsFromSocket: (newNews: NewsItem) => {
+    set((state) => {
+      const newsExists = state.news.some((item) => item._id === newNews._id);
+
+      if (!newsExists) {
+        return {
+          news: [newNews, ...state.news],
+          count: state.count + 1,
+        };
+      }
+      return state;
+    });
+  },
+  updateNewsFromSocket: (updatedNews: NewsItem) => {
+    set((state) => {
+      const updatedNewsArray = state.news.map((item) =>
+        item._id === updatedNews._id ? updatedNews : item,
+      );
+
+      const updatedSingleNews =
+        state.singleNews && state.singleNews._id === updatedNews._id
+          ? updatedNews
+          : state.singleNews;
+
+      return {
+        news: updatedNewsArray,
+        singleNews: updatedSingleNews,
+      };
+    });
+  },
+  removeNewsFromSocket: (newsId: string) => {
+    set((state) => {
+      const filteredNews = state.news.filter((item) => item._id !== newsId);
+
+      // Check if the new list of items is < the count in the state, we reduce with 1 else just keep it as it is
+      const newCount =
+        filteredNews.length < state.count ? state.count - 1 : state.count;
+
+      const updatedSingleNews =
+        state.singleNews && state.singleNews._id === newsId
+          ? null
+          : state.singleNews;
+
+      return {
+        news: filteredNews,
+        count: newCount,
+        singleNews: updatedSingleNews,
+      };
+    });
   },
 }));
