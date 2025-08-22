@@ -34,7 +34,7 @@ const DeleteNewsButton = ({ newsId }: DeleteNewsButtonProps) => {
       });
       navigate('/');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert('Failed to delete news article');
     } finally {
       setIsDeleting(false);

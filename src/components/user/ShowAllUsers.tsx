@@ -1,18 +1,10 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { showAllUsers } from '@/features/thunks/userThunk';
 import UserCard from '../user/UserCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useLoadUsers, useUserList } from '@/hooks/useUser';
 
 const ShowAllUsers = () => {
-  const dispatch = useDispatch();
-  const { users, isLoading } = useSelector((state) => state.user);
-  const showUsers = async () => {
-    await dispatch(showAllUsers()).unwrap();
-  };
-  useEffect(() => {
-    showUsers();
-  }, []);
+  const { users, isLoading } = useUserList();
+  useLoadUsers();
 
   // Group users by role
   const admins = users.filter((user) => user.role === 'admin');

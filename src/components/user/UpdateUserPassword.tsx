@@ -1,13 +1,10 @@
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { FormInput, SubmitBtn, ImageInput } from '@/components/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { updatePassword } from '@/features/thunks/userThunk';
+import { userUserActions } from '@/hooks/useUser';
 
 const UpdateUserPassword = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { updatePassword } = userUserActions();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -21,14 +18,12 @@ const UpdateUserPassword = () => {
         toast.warning('New password does not match Retype Password');
         return;
       }
-      await dispatch(
-        updatePassword({
-          oldPassword,
-          newPassword,
-        }),
-      ).unwrap();
+      const response = await updatePassword({
+        oldPassword,
+        newPassword,
+      });
 
-      toast.success('Password Updated Successfully', {
+      toast.success(response.msg || 'Password Updated Successfully', {
         position: 'top-center',
         autoClose: 1500,
         hideProgressBar: false,

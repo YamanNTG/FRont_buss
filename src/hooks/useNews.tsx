@@ -2,14 +2,8 @@ import { useEffect } from 'react';
 import { useNewsStore } from '@/store/news';
 
 // Single news hook
-export const useSingleNews = (newsId?: string) => {
-  const { singleNews, isLoading, error, getSingleNews, msg } = useNewsStore();
-
-  useEffect(() => {
-    if (newsId) {
-      getSingleNews(newsId);
-    }
-  }, [getSingleNews, newsId]);
+export const useSingleNews = () => {
+  const { singleNews, isLoading, error, msg } = useNewsStore();
 
   return {
     singleNews,
@@ -34,6 +28,16 @@ export const useNewsList = () => {
     error,
   };
 };
+// Fetch Single News
+export const useLoadSingleNews = (newsId: string) => {
+  const { getSingleNews } = useNewsActions();
+
+  useEffect(() => {
+    if (newsId) {
+      getSingleNews(newsId);
+    }
+  }, [newsId]);
+};
 
 // News actions hook
 export const useNewsActions = () => {
@@ -46,6 +50,7 @@ export const useNewsActions = () => {
     addNewsFromSocket,
     updateNewsFromSocket,
     removeNewsFromSocket,
+    getSingleNews,
   } = useNewsStore();
 
   return {
@@ -57,5 +62,6 @@ export const useNewsActions = () => {
     addNewsFromSocket,
     updateNewsFromSocket,
     removeNewsFromSocket,
+    getSingleNews,
   };
 };

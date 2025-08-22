@@ -1,11 +1,11 @@
 import { RegisterInvite } from '@/components';
 import ShowAllUsers from '@/components/user/ShowAllUsers';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from '@/utils/hooks';
 import { useEffect } from 'react';
+import { useSingleUser } from '@/hooks/useUser';
 const Users = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSingleUser();
   useEffect(() => {
     if (user?.role !== 'admin') {
       navigate('/');

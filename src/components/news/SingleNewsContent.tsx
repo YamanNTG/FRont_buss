@@ -1,13 +1,13 @@
 import { formatDate } from '@/utils/formatDate';
-import { useSingleNews } from '@/hooks/useNews';
+import { useLoadSingleNews, useSingleNews } from '@/hooks/useNews';
 
 interface SingleNewsContentProps {
   newsId: string;
 }
 
 const SingleNewsContent = ({ newsId }: SingleNewsContentProps) => {
-  const { singleNews, isLoading, error } = useSingleNews(newsId);
-
+  const { singleNews, isLoading, error } = useSingleNews();
+  useLoadSingleNews(newsId);
   if (isLoading) {
     return <div>Loading...</div>;
   }

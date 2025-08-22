@@ -1,11 +1,10 @@
-// src/components/UpdateNewsForm.tsx
 import { useState, useEffect } from 'react';
-import { useSelector } from '@/utils/hooks';
 import { Card, CardContent } from '@/components/ui/card';
 import { SubmitBtn } from '@/components/form';
 import ImageInput from '@/components/form/ImageInput';
 import { useNavigate } from 'react-router-dom';
 import { useNewsActions, useSingleNews } from '@/hooks/useNews';
+import { useSingleUser } from '@/hooks/useUser';
 
 interface UpdateNewsFormProps {
   newsId: string;
@@ -13,7 +12,7 @@ interface UpdateNewsFormProps {
 }
 
 const UpdateNewsForm = ({ newsId, onSuccess }: UpdateNewsFormProps) => {
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSingleUser();
   const navigate = useNavigate();
   const { uploadFile, updateNews } = useNewsActions();
   const { singleNews } = useSingleNews();

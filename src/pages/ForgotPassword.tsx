@@ -15,9 +15,7 @@ const ForgotPassword = () => {
     const userEmail = formData.get('email') as string;
 
     try {
-      const response = await dispatch(forgotPassword(userEmail)).unwrap();
-
-      console.log(response);
+      await dispatch(forgotPassword(userEmail)).unwrap();
     } catch (error) {
       console.error('Forgot Password failed:', error);
     }

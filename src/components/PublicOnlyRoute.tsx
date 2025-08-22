@@ -1,31 +1,26 @@
 import { Navigate } from 'react-router-dom';
-import { useSelector, useDispatch } from '@/utils/hooks';
-import { RootState } from '../store';
-import { showCurrentUser } from '@/features/thunks/userThunk';
 import { useEffect, useState } from 'react';
+import { userUserActions, useSingleUser } from '@/hooks/useUser';
 interface PublicOnlyRouteProps {
   children: React.ReactNode;
 }
 
 const PublicOnlyRoute = ({ children }: PublicOnlyRouteProps) => {
-  const dispatch = useDispatch();
-
-  const { isAuthenticated, isLoading } = useSelector(
-    (state: RootState) => state.user
-  );
+  const { showCurrentUser } = userUserActions();
+  const { isAuthenticated, isLoading } = useSingleUser();
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await dispatch(showCurrentUser());
+        await showCurrentUser();
       } finally {
         setIsChecking(false);
       }
     };
 
     checkAuth();
-  }, [dispatch]);
+  }, []);
 
   // Show loading while checking auth
   if (isChecking || isLoading) {

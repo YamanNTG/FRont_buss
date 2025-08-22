@@ -204,18 +204,3 @@ export const resetPassword = createAsyncThunk<
     }
   },
 );
-
-export const logoutUser = createAsyncThunk<{ rejectValue: string }>(
-  'auth/logout',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await customFetch.delete('/api/v1/auth/logout');
-      return response.data;
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        return rejectWithValue(error.response?.data?.msg || 'Logout Failed');
-      }
-      return rejectWithValue('An unexpected error occurred');
-    }
-  },
-);

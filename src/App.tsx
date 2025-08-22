@@ -8,7 +8,6 @@ import {
   Login,
   Error,
   Issues,
-  HolidaySwap,
   NewsFeed,
   CreateNewsFeed,
   CreateIssue,
@@ -26,7 +25,6 @@ import {
   ErrorElement,
   InstallPWA,
 } from './components';
-import { useEffect } from 'react';
 
 const router = createBrowserRouter([
   {

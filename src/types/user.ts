@@ -22,14 +22,6 @@ export type UpdateProfilePayload = {
   profileImage: string;
 };
 
-export type UpdateProfileResponse = {
-  msg: string | null;
-};
-
-export type UpdatePasswordResponse = {
-  msg: string | null;
-};
-
 export type UpdatePasswordPayload = {
   oldPassword: string;
   newPassword: string;

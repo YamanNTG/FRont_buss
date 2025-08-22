@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,11 +6,11 @@ import { formatDate } from '@/utils/formatDate';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useNewsSocket from '../utils/useNewsSocket';
 import { useNewsActions, useNewsList } from '@/hooks/useNews';
+import { useSingleUser } from '@/hooks/useUser';
 
 function NewsFeed() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSingleUser();
   const { news, count, currentPage, hasMore, isLoading } = useNewsList();
   const { getAllNews } = useNewsActions();
 
@@ -34,7 +33,7 @@ function NewsFeed() {
         socketId,
       );
     }
-  }, [dispatch, isConnected, socketId]);
+  }, [isConnected, socketId]);
 
   return (
     <div className="container mx-auto px-4 py-8">

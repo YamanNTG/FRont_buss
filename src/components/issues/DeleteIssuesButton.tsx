@@ -35,7 +35,7 @@ const DeleteIssueButton = ({ issueId }: DeleteIssueButtonProps) => {
 
       navigate('/safety');
     } catch (error) {
-      console.log(error);
+      console.error(error);
       alert('Failed to delete issue');
     } finally {
       setIsDeleting(false);

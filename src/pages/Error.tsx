@@ -1,9 +1,9 @@
-import { useRouteError, Link, isRouteErrorResponse } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { useRouteError, Link, isRouteErrorResponse } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const Error = () => {
   const error = useRouteError();
-  console.log(error);
+  console.error(error);
 
   if (isRouteErrorResponse(error) && error.status === 404) {
     //typescript safeguard

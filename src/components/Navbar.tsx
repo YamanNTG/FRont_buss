@@ -1,12 +1,12 @@
 import { FaBus } from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
-import { FaPlus } from 'react-icons/fa';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { logoutUser } from '@/features/thunks/authThunk';
+import { useDispatch } from '@/utils/hooks';
 import { Button } from '@/components/ui/button';
+import { useSingleUser } from '@/hooks/useUser';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 
 type NavItem = {
   name: string;
@@ -15,11 +15,11 @@ type NavItem = {
 
 const Navbar = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading } = useAuthUser();
+  const { logoutUser } = useAuthActions();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoading } = useSelector((state) => state.auth);
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSingleUser();
 
   const navItems: NavItem[] = [
     { name: 'News', path: '/' },
@@ -29,7 +29,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      await dispatch(logoutUser());
+      await logoutUser();
       navigate(0);
     } catch (error) {
       console.error('Logout failed', error);

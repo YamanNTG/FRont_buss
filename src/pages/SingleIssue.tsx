@@ -1,4 +1,3 @@
-import { useSelector } from '@/utils/hooks';
 import { useParams } from 'react-router-dom';
 import {
   DeleteIssuesButton,
@@ -7,11 +6,12 @@ import {
 } from '@/components';
 
 import { useState } from 'react';
+import { useSingleUser } from '@/hooks/useUser';
 
 const SingleIssue = () => {
   const { id } = useParams();
   const [isEditing, setIsEditing] = useState(false);
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSingleUser();
 
   if (!id) {
     return <div>Issue not found</div>;

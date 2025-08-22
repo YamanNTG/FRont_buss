@@ -1,14 +1,13 @@
-import { updateProfile } from '@/features/thunks/userThunk';
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { FormInput, SubmitBtn, ImageInput } from '@/components/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'react-toastify';
 import { useNewsActions } from '@/hooks/useNews';
+import { userUserActions, useSingleUser } from '@/hooks/useUser';
 
 const UpdateProfile = () => {
-  const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const { user } = useSingleUser();
   const { uploadFile } = useNewsActions();
+  const { updateProfile } = userUserActions();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -24,22 +23,23 @@ const UpdateProfile = () => {
         profileImage = response.image;
       }
 
-      await dispatch(
-        updateProfile({
-          name,
-          email,
-          profileImage,
-        }),
-      ).unwrap();
-
-      toast.success('Profile Updated Successfully', {
-        position: 'top-center',
-        autoClose: 1500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+      const updateProfileResponse = await updateProfile({
+        name,
+        email,
+        profileImage,
       });
+
+      toast.success(
+        updateProfileResponse.msg || 'Profile Updated Successfully',
+        {
+          position: 'top-center',
+          autoClose: 1500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        },
+      );
 
       setTimeout(() => {
         window.location.reload();

@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { SubmitBtn } from '@/components/form';
 import { useNavigate } from 'react-router-dom';
 import LocationPicker from '../issues/LocationPicker';
+import { useSingleUser } from '@/hooks/useUser';
 
 interface UpdateIssueFormProps {
   issueId: string;
@@ -12,7 +13,7 @@ interface UpdateIssueFormProps {
 }
 
 const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSingleUser();
   const navigate = useNavigate();
 
   useEffect(() => {

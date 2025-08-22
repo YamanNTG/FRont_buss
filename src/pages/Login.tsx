@@ -5,11 +5,12 @@ import { FormInput, SubmitBtn } from '@/components/form';
 import { loginUser } from '@/features/thunks/authThunk';
 import { LoginUserData } from '@/types/auth';
 import { toast } from 'react-toastify';
-import { showCurrentUser } from '@/features/thunks/userThunk';
+import { userUserActions } from '@/hooks/useUser';
 const Login: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading } = useSelector((state) => state.auth);
+  const { showCurrentUser } = userUserActions();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ const Login: React.FC = () => {
         );
         return; // Don't navigate if not verified
       }
-      await dispatch(showCurrentUser());
+      await showCurrentUser();
       toast.success('Logged in Successfully', {
         position: 'top-right',
         autoClose: 3000,

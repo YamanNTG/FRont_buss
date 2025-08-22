@@ -5,7 +5,6 @@ import {
   verifyToken,
   forgotPassword,
   resetPassword,
-  logoutUser,
   inviteUser,
   verifyRegisterToken,
 } from '../thunks/authThunk';
@@ -125,18 +124,6 @@ const authSlice = createSlice({
         state.msg = action.payload.msg;
       })
       .addCase(resetPassword.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message ?? 'An error occurred';
-      })
-      // Logout User
-      .addCase(logoutUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(logoutUser.fulfilled, (state) => {
-        state.isLoading = false;
-        state.success = true;
-      })
-      .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message ?? 'An error occurred';
       });

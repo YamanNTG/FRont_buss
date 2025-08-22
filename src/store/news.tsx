@@ -116,13 +116,9 @@ export const useNewsStore = create<NewsStore>((set, get) => ({
     }
   },
   getSingleNews: async (newsId: string) => {
-    console.log(newsId, 'id');
-
     set({ isLoading: true, error: null });
     try {
       const response = await customFetch.get(`/api/v1/news/${newsId}`);
-      console.log(response);
-
       set({ isLoading: false, singleNews: response.data.news });
       return response.data.news;
     } catch (error) {
