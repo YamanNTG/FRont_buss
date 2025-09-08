@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { useDispatch } from '@/utils/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { createIssue } from '../features/thunks/issuesThunk';
 import { LocationPicker } from '../components';
 import { toast } from 'react-toastify';
 import { createIssuesSchema } from '@/utils/schemas';
 import { z } from 'zod';
+import { useIssuesActions } from '@/hooks/useIssues';
 
 interface IssueData {
   title: string;
@@ -26,9 +25,8 @@ const DEFAULT_LOCATION = {
 };
 
 const CreateIssue = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const { createIssue } = useIssuesActions();
   const [issueData, setIssueData] = useState<IssueData>({
     title: '',
     description: '',
@@ -56,12 +54,13 @@ const CreateIssue = () => {
     e.preventDefault();
 
     try {
-      const validatedData = createIssuesSchema.parse({
+      const validatedIssueData = createIssuesSchema.parse({
         title: issueData.title,
         description: issueData.description,
+        location: issueData.location,
       });
 
-      await dispatch(createIssue(issueData)).unwrap();
+      await createIssue(validatedIssueData);
 
       toast.success('Issue created!', {
         position: 'top-center',

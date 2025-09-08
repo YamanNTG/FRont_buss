@@ -1,13 +1,11 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FormInput, SubmitBtn } from '@/components/form';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { forgotPassword } from '@/features/thunks/authThunk';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 
 const ForgotPassword = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isLoading, success, msg } = useSelector((state) => state.auth);
+  const { isLoading, success, msg } = useAuthUser();
+  const { forgotPassword } = useAuthActions();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -15,7 +13,7 @@ const ForgotPassword = () => {
     const userEmail = formData.get('email') as string;
 
     try {
-      await dispatch(forgotPassword(userEmail)).unwrap();
+      await forgotPassword(userEmail);
     } catch (error) {
       console.error('Forgot Password failed:', error);
     }

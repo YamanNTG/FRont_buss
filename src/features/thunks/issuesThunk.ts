@@ -1,21 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { customFetch } from '@/utils/customFetch';
-import { CreateIssuesData, IssuesItem } from '@/types/issues';
+import { IssuesItem } from '@/types/issues';
 import { AxiosError } from 'axios';
-
-export const createIssue = createAsyncThunk<any, CreateIssuesData>(
-  'issues/createIssue',
-  async (issueData: CreateIssuesData) => {
-    try {
-      const response = await customFetch.post('/api/v1/issues', issueData);
-      return response.data;
-    } catch (error) {
-      throw new Error(
-        error instanceof Error ? error.message : 'Failed to create issue',
-      );
-    }
-  },
-);
 
 interface IssuesResponse {
   issues: IssuesItem[];

@@ -1,10 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from './features/slices/authSlice';
 import issuesReducer from './features/slices/issuesSlice';
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
     issues: issuesReducer,
   },
 });

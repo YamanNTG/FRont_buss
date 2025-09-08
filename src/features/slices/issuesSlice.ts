@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IssuesState } from '@/types/issues';
 import {
-  createIssue,
   getAllIssues,
   deleteIssue,
   getSingleIssue,
@@ -76,21 +75,6 @@ const issuesSlice = createSlice({
   },
   extraReducers(builder) {
     builder
-
-      // Create News cases
-      .addCase(createIssue.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createIssue.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.issues.unshift(action.payload); // Add new issues to the beginning
-        state.count += 1;
-      })
-      .addCase(createIssue.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message ?? 'An error occurred';
-      })
 
       // Get All issues cases
       .addCase(getAllIssues.pending, (state) => {

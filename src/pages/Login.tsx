@@ -1,24 +1,23 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { FormInput, SubmitBtn } from '@/components/form';
-import { loginUser } from '@/features/thunks/authThunk';
-import { LoginUserData } from '@/types/auth';
+import { LoginPayload } from '@/types/auth';
 import { toast } from 'react-toastify';
 import { userUserActions } from '@/hooks/useUser';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 const Login: React.FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading } = useAuthUser();
   const { showCurrentUser } = userUserActions();
+  const { loginUser } = useAuthActions();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const credentials = Object.fromEntries(formData) as LoginUserData;
+    const credentials = Object.fromEntries(formData) as LoginPayload;
 
     try {
-      const result = await dispatch(loginUser(credentials)).unwrap();
+      const result = await loginUser(credentials);
       if (!result.isVerified) {
         toast.error(
           'Please verify your email. Check your inbox for verification link.',

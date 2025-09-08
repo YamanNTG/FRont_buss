@@ -1,5 +1,4 @@
 import { SubmitBtn } from '@/components/form';
-import { useSelector } from '@/utils/hooks';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import ImageInput from '../components/form/ImageInput';
@@ -8,9 +7,10 @@ import { createNewsSchema } from '@/utils/schemas';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { useNewsActions } from '@/hooks/useNews';
+import { useAuthUser } from '@/hooks/useAuth';
 const CreateNewsFeed = () => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useAuthUser();
   const { uploadFile, createNews } = useNewsActions();
 
   const checkRole = async () => {

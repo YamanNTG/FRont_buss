@@ -1,13 +1,11 @@
 import { Card, CardContent } from '@/components/ui/card';
-
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { InviteUserData } from '@/types/auth';
-import { inviteUser } from '@/features/thunks/authThunk';
 import { toast } from 'react-toastify';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 
 const RegisterInvite = () => {
-  const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading } = useAuthUser();
+  const { inviteUser } = useAuthActions();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -17,7 +15,7 @@ const RegisterInvite = () => {
     const inviteData = Object.fromEntries(formData) as InviteUserData;
 
     try {
-      await dispatch(inviteUser(inviteData)).unwrap();
+      await inviteUser(inviteData);
       toast.success('Invite Sent Successfully!', {
         position: 'top-right',
         autoClose: 3000,

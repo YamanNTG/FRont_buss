@@ -1,20 +1,19 @@
-import { resetPassword } from '@/features/thunks/authThunk';
 import { FormInput, SubmitBtn } from '@/components/form';
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { toast } from 'react-toastify';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const ResetPassword = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const query = useQuery();
-  const { isLoading, success, msg } = useSelector((state) => state.auth);
+  const { isLoading, success, msg } = useAuthUser();
+  const { resetPassword } = useAuthActions();
 
   const passwordToken = query.get('token');
   const email = query.get('email');
@@ -38,9 +37,7 @@ const ResetPassword = () => {
     }
 
     try {
-      await dispatch(
-        resetPassword({ passwordToken, email, password }),
-      ).unwrap();
+      await resetPassword({ passwordToken, email, password });
     } catch (error) {
       toast.error(
         'Invalid link, use link provided in your email to reset password',

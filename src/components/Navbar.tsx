@@ -3,7 +3,6 @@ import { CgProfile } from 'react-icons/cg';
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { useDispatch } from '@/utils/hooks';
 import { Button } from '@/components/ui/button';
 import { useSingleUser } from '@/hooks/useUser';
 import { useAuthActions, useAuthUser } from '@/hooks/useAuth';

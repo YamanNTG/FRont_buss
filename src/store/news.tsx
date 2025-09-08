@@ -81,7 +81,6 @@ export const useNewsStore = create<NewsStore>((set, get) => ({
         isLoading: false,
         news: [newNewsItem, ...state.news],
         count: state.count + 1,
-        error: null,
       }));
       return newNewsItem;
     } catch (error) {

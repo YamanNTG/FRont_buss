@@ -62,4 +62,8 @@ export const createIssuesSchema = z.object({
     .string()
 
     .max(2000, "Description can't exceed 2000 characters"),
+  location: z.object({
+    lat: z.number(),
+    lng: z.number(),
+  }),
 });

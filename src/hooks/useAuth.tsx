@@ -16,9 +16,25 @@ export const useAuthUser = () => {
 };
 
 export const useAuthActions = () => {
-  const { logoutUser } = useAuthStore();
+  const {
+    logoutUser,
+    resetPassword,
+    forgotPassword,
+    loginUser,
+    verifyToken,
+    verifyRegisterToken,
+    registerUser,
+    inviteUser,
+  } = useAuthStore();
 
   return {
     logoutUser,
+    resetPassword,
+    forgotPassword,
+    loginUser,
+    verifyToken,
+    verifyRegisterToken,
+    registerUser,
+    inviteUser,
   };
 };

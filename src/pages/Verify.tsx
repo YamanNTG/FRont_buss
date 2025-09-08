@@ -1,18 +1,17 @@
-import { verifyToken } from '@/features/thunks/authThunk';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { toast } from 'react-toastify';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const Verify = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const query = useQuery();
-  const { isLoading } = useSelector((state) => state.auth);
+  const { isLoading } = useAuthUser();
+  const { verifyToken } = useAuthActions();
 
   const verificationToken = query.get('token');
   const email = query.get('email');
@@ -23,7 +22,7 @@ const Verify = () => {
       return;
     }
     try {
-      await dispatch(verifyToken({ verificationToken, email })).unwrap();
+      await verifyToken({ verificationToken, email });
     } catch (error) {
       toast.error('Use the link provided in your email to get verified', {
         autoClose: 5000,

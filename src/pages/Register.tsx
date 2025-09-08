@@ -1,22 +1,20 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FormInput, SubmitBtn } from '@/components/form';
-import { useDispatch, useSelector } from '@/utils/hooks';
 import { RegisterUserData } from '@/types/auth';
-import { registerUser, verifyRegisterToken } from '@/features/thunks/authThunk';
-
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const Register: React.FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const query = useQuery();
-  const { isLoading, success } = useSelector((state) => state.auth);
+  const { isLoading, success } = useAuthUser();
+  const { verifyRegisterToken, registerUser } = useAuthActions();
   const inviteToken = query.get('token');
   const email = query.get('email') as string;
 
@@ -26,7 +24,9 @@ const Register: React.FC = () => {
       return;
     }
     try {
-      await dispatch(verifyRegisterToken({ inviteToken, email })).unwrap();
+      console.log(inviteToken, email);
+
+      await verifyRegisterToken({ inviteToken, email });
     } catch (error) {
       toast.error('Use the link provided in your email to register', {
         autoClose: 5000,
@@ -41,7 +41,7 @@ const Register: React.FC = () => {
     const userData = Object.fromEntries(formData) as RegisterUserData;
 
     try {
-      await dispatch(registerUser(userData));
+      await registerUser(userData);
       toast.success('Registered Successfully', {
         position: 'top-right',
         autoClose: 3000,
