@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { getAllIssues, getActiveIssues } from '@/features/thunks/issuesThunk';
 import IssuesMap from '../components/issues/IssuesMap';
 import LocationViewer from '@/components/issues/LocationViewer';
 import { formatDate } from '@/utils/formatDate';
@@ -11,20 +9,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import useIssuesSocket from '../utils/useIssueSocket';
 import { IssuesItem } from '@/types/issues';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-interface IssuesState {
-  issues: IssuesItem[];
-  count: number;
-  currentPage: number;
-  totalPages: number;
-  hasMore: boolean;
-  isLoading: boolean;
-  activeIssuesCount: number;
-  resolvedIssuesCount: number;
-}
+import { useIssuesActions, useIssuesList } from '@/hooks/useIssues';
 
 const Issues = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     issues,
@@ -33,22 +20,22 @@ const Issues = () => {
     hasMore,
     isLoading,
     activeIssuesCount,
+    ongoingIssuesCount,
     resolvedIssuesCount,
-  } = useSelector((state) => state.issues as IssuesState);
+  } = useIssuesList();
+  const { getAllIssues } = useIssuesActions();
 
-  // Use the specialized socket hook for issues
-  const { socket, isConnected, socketId } = useIssuesSocket();
+  const { isConnected, socketId } = useIssuesSocket();
 
   const loadMoreIssues = () => {
     if (!isLoading && hasMore) {
-      dispatch(getAllIssues({ page: currentPage + 1 }));
+      getAllIssues({ page: currentPage + 1 });
     }
   };
 
   useEffect(() => {
     // Initial fetch
-    dispatch(getActiveIssues());
-    dispatch(getAllIssues({ page: 1 }));
+    getAllIssues({ page: 1 });
 
     if (isConnected) {
       console.log('Connected to real-time updates, socket ID:', socketId);
@@ -57,7 +44,7 @@ const Issues = () => {
     return () => {
       console.log('Component unmounting');
     };
-  }, [dispatch, isConnected, socketId]);
+  }, [getAllIssues, isConnected, socketId]);
 
   if (count === 0 && !isLoading) {
     return (
@@ -77,11 +64,6 @@ const Issues = () => {
       </div>
     );
   }
-  const openIssues = issues.filter((issue) => issue.status === 'open');
-  const ongoingIssues = issues.filter(
-    (issue) => issue.status === 'in-progress',
-  );
-  const resolvedIssues = issues.filter((issue) => issue.status === 'resolved');
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-12">
@@ -119,7 +101,7 @@ const Issues = () => {
                   Open and In-Progress issues
                 </h3>
                 <p className="text-2xl font-bold text-blue-900">
-                  {activeIssuesCount}
+                  {activeIssuesCount + ongoingIssuesCount}
                 </p>
               </div>
               <div className="bg-purple-50 p-4 rounded-lg">

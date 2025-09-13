@@ -1,23 +1,11 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { getSingleIssue } from '@/features/thunks/issuesThunk';
 import { formatDate } from '@/utils/formatDate';
-
 import LocationViewer from './LocationViewer';
+import { useLoadSingleIssue, useSingleIssue } from '@/hooks/useIssues';
 
-interface SingleIssueContentProps {
-  issueId: string;
-}
+const SingleIssueContent = ({ issueId }: { issueId: string }) => {
+  const { singleIssue, isLoading, error } = useSingleIssue();
 
-const SingleIssueContent = ({ issueId }: SingleIssueContentProps) => {
-  const dispatch = useDispatch();
-  const { singleIssue, isLoading, error } = useSelector(
-    (state) => state.issues,
-  );
-
-  useEffect(() => {
-    dispatch(getSingleIssue(issueId));
-  }, [dispatch, issueId]);
+  useLoadSingleIssue(issueId);
 
   if (isLoading) {
     return <div>Loading...</div>;

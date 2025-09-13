@@ -1,5 +1,4 @@
 import { useEffect, useCallback } from 'react';
-import { useDispatch } from '@/utils/hooks';
 import { getSocket } from '../services/socketService';
 import { useNewsActions } from '@/hooks/useNews';
 
@@ -7,7 +6,6 @@ import { useNewsActions } from '@/hooks/useNews';
  * Custom hook for handling socket events related to news
  */
 export const useNewsSocket = () => {
-  const dispatch = useDispatch();
   const socket = getSocket();
   const { addNewsFromSocket, updateNewsFromSocket, removeNewsFromSocket } =
     useNewsActions();
@@ -33,7 +31,7 @@ export const useNewsSocket = () => {
       console.log('Socket: News deleted, ID:', newsId);
       removeNewsFromSocket(newsId);
     });
-  }, [dispatch, socket]);
+  }, [addNewsFromSocket, updateNewsFromSocket, removeNewsFromSocket, socket]);
 
   // Cleanup function for socket events
   const cleanupNewsEvents = useCallback(() => {

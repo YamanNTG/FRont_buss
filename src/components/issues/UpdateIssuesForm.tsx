@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from '@/utils/hooks';
-import { updateIssue } from '@/features/thunks/issuesThunk';
 import { Card, CardContent } from '@/components/ui/card';
 import { SubmitBtn } from '@/components/form';
 import { useNavigate } from 'react-router-dom';
 import LocationPicker from '../issues/LocationPicker';
 import { useSingleUser } from '@/hooks/useUser';
+import { useIssuesActions, useSingleIssue } from '@/hooks/useIssues';
 
 interface UpdateIssueFormProps {
   issueId: string;
@@ -15,6 +14,8 @@ interface UpdateIssueFormProps {
 const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
   const { user } = useSingleUser();
   const navigate = useNavigate();
+  const { singleIssue } = useSingleIssue();
+  const { updateIssue } = useIssuesActions();
 
   useEffect(() => {
     if (user?.role !== 'admin') {
@@ -25,9 +26,6 @@ const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
   if (user?.role !== 'admin') {
     return null;
   }
-
-  const dispatch = useDispatch();
-  const { singleIssue } = useSelector((state) => state.issues);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -86,17 +84,12 @@ const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
         status: formData.status,
       };
 
-      const result = await dispatch(
-        updateIssue({
-          issueId,
-          issueData,
-        }),
-      ).unwrap();
+      const response = await updateIssue(issueId, issueData);
 
-      if (result) {
+      if (response) {
         navigate(`/safety`);
       } else {
-        console.error('Update returned undefined result');
+        console.error('Update returned undefined response');
       }
     } catch (error) {
       console.error('Failed to update issue:', error);
