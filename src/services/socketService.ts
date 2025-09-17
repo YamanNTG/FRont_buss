@@ -5,10 +5,9 @@ let socket: Socket | null = null;
 // Function to initialize the socket connection
 export const initializeSocket = (): Socket => {
   if (!socket) {
-    socket = io('https://dbuss-api-025-8594a98bd0c9.herokuapp.com', {
+    socket = io(process.env.VITE_HEROKU_URL, {
       transports: ['polling'],
       reconnection: true,
-      timeout: 20000,
     });
 
     socket.on('connect', () => {
