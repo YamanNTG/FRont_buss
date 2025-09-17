@@ -6,9 +6,8 @@ let socket: Socket | null = null;
 export const initializeSocket = (): Socket => {
   if (!socket) {
     socket = io(process.env.VITE_HEROKU_URL, {
+      transports: ['polling'],
       reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
       timeout: 20000,
     });
 
