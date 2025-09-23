@@ -12,8 +12,8 @@ interface UpdateNewsFormProps {
 }
 
 const UpdateNewsForm = ({ newsId, onSuccess }: UpdateNewsFormProps) => {
-  const { user } = useSingleUser();
   const navigate = useNavigate();
+  const { user } = useSingleUser();
   const { uploadFile, updateNews } = useNewsActions();
   const { singleNews } = useSingleNews();
 

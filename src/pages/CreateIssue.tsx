@@ -9,15 +9,7 @@ import { toast } from 'react-toastify';
 import { createIssuesSchema } from '@/utils/schemas';
 import { z } from 'zod';
 import { useIssuesActions } from '@/hooks/useIssues';
-
-interface IssueData {
-  title: string;
-  description: string;
-  location: {
-    lat: number;
-    lng: number;
-  };
-}
+import { IssueData } from '@/types/issues';
 
 const DEFAULT_LOCATION = {
   lat: 53.3498,

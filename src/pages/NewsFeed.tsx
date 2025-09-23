@@ -25,14 +25,6 @@ function NewsFeed() {
 
   useEffect(() => {
     getAllNews({ page: 1 });
-
-    // Log socket connection status
-    if (isConnected) {
-      console.log(
-        'News feed connected to real-time updates, socket ID:',
-        socketId,
-      );
-    }
   }, [isConnected, socketId]);
 
   return (

@@ -7,13 +7,13 @@ import { createNewsSchema } from '@/utils/schemas';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { useNewsActions } from '@/hooks/useNews';
-import { useAuthUser } from '@/hooks/useAuth';
+import { useSingleUser } from '@/hooks/useUser';
 const CreateNewsFeed = () => {
   const navigate = useNavigate();
-  const { user } = useAuthUser();
+  const { user } = useSingleUser();
   const { uploadFile, createNews } = useNewsActions();
 
-  const checkRole = async () => {
+  const checkRole = () => {
     if (user?.role !== 'admin') {
       navigate('/');
       return;

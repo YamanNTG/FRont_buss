@@ -36,15 +36,7 @@ const Issues = () => {
   useEffect(() => {
     // Initial fetch
     getAllIssues({ page: 1 });
-
-    if (isConnected) {
-      console.log('Connected to real-time updates, socket ID:', socketId);
-    }
-
-    return () => {
-      console.log('Component unmounting');
-    };
-  }, [getAllIssues, isConnected, socketId]);
+  }, [isConnected, socketId]);
 
   if (count === 0 && !isLoading) {
     return (

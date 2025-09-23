@@ -5,6 +5,8 @@ import { LoginPayload } from '@/types/auth';
 import { toast } from 'react-toastify';
 import { userUserActions } from '@/hooks/useUser';
 import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
+import { loginSchema } from '@/utils/schemas';
+
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { isLoading } = useAuthUser();
@@ -14,19 +16,36 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const credentials = Object.fromEntries(formData) as LoginPayload;
+    const data = Object.fromEntries(formData) as LoginPayload;
 
     try {
-      const result = await loginUser(credentials);
-      if (!result.isVerified) {
+      const credentials = loginSchema.safeParse(data);
+
+      if (!credentials.success) {
+        const firstError = credentials.error.errors[0];
+        toast.error(firstError.message);
+        return;
+      }
+
+      const userData = await loginUser(credentials.data);
+
+      if (!userData) {
+        toast.error('Invalid Credentials', {
+          autoClose: 5000,
+        });
+        return; // Don't navigate if user doesn't exist
+      }
+
+      if (!userData.isVerified) {
         toast.error(
           'Please verify your email. Check your inbox for verification link.',
           {
             autoClose: 5000,
           },
         );
-        return; // Don't navigate if not verified
+        return; // Don't navigate if user not verified
       }
+
       await showCurrentUser();
       toast.success('Logged in Successfully', {
         position: 'top-right',
@@ -39,17 +58,9 @@ const Login: React.FC = () => {
 
       navigate('/');
     } catch (error: any) {
-      // Check specifically for verification error
-      if (error === 'Please verify your email') {
-        toast.error(
-          'Please verify your email. Check your inbox for verification link.',
-          {
-            autoClose: 5000,
-          },
-        );
-      } else {
-        toast.error(error || 'Login failed');
-      }
+      console.log(error, 'errorrrrr');
+
+      toast.error(error || 'Login failed');
     }
   };
 

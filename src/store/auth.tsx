@@ -176,8 +176,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     inviteToken,
     email,
   }: VerifyRegisterTokenPayload) => {
-    console.log(inviteToken, email);
-
     set({
       isLoading: true,
       error: null,

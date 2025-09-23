@@ -212,8 +212,8 @@ const UpdateIssueForm = ({ issueId }: UpdateIssueFormProps) => {
               <LocationPicker
                 onLocationSelect={handleLocationSelect}
                 initialLocation={{
-                  lat: formData.location.lat,
-                  lng: formData.location.lng,
+                  lat: singleIssue?.location.lat || formData.location.lat,
+                  lng: singleIssue?.location.lng || formData.location.lng,
                 }}
                 isPinDraggable={true}
               />

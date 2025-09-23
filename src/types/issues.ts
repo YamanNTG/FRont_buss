@@ -36,3 +36,12 @@ export type CreateIssuesData = {
     lng: number;
   };
 };
+
+export type IssueData = {
+  title: string;
+  description: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+};

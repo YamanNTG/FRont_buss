@@ -15,9 +15,9 @@ type NavItem = {
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isLoading } = useAuthUser();
   const { logoutUser } = useAuthActions();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user } = useSingleUser();
 
   const navItems: NavItem[] = [

@@ -24,8 +24,6 @@ const Register: React.FC = () => {
       return;
     }
     try {
-      console.log(inviteToken, email);
-
       await verifyRegisterToken({ inviteToken, email });
     } catch (error) {
       toast.error('Use the link provided in your email to register', {
