@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
 import { LocationPicker } from '../components';
 import { toast } from 'react-toastify';
 import { createIssuesSchema } from '@/utils/schemas';
 import { z } from 'zod';
 import { useIssuesActions } from '@/hooks/useIssues';
 import { IssueData } from '@/types/issues';
+import { SubmitBtn } from '@/components/form';
 
 const DEFAULT_LOCATION = {
   lat: 53.3498,
@@ -24,6 +24,7 @@ const CreateIssue = () => {
     description: '',
     location: DEFAULT_LOCATION,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -44,7 +45,7 @@ const CreateIssue = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     try {
       const validatedIssueData = createIssuesSchema.parse({
         title: issueData.title,
@@ -62,6 +63,7 @@ const CreateIssue = () => {
         pauseOnHover: true,
         draggable: true,
       });
+      setIsLoading(false);
       setTimeout(() => {
         navigate('/safety');
       }, 3000);
@@ -155,13 +157,16 @@ const CreateIssue = () => {
               </div>
 
               <div className="pt-4">
-                <Button
-                  type="submit"
-                  className="w-full py-3 text-sm md:text-base bg-gradient-to-r from-blue-500 to-blue-600 
-                           hover:from-blue-600 hover:to-blue-700 text-white font-medium"
-                >
-                  Create Issue
-                </Button>
+                <SubmitBtn
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                  text="Create Issue"
+                  className="w-full py-3 text-sm md:text-base 
+                           bg-gradient-to-r from-blue-500 to-blue-600 
+                           hover:from-blue-600 hover:to-blue-700 
+                           text-white font-medium rounded-md 
+                           shadow-sm transition-all duration-200"
+                />
               </div>
             </form>
           </CardContent>

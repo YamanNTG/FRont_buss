@@ -2,16 +2,17 @@ import { SubmitBtn } from '@/components/form';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import ImageInput from '../components/form/ImageInput';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { createNewsSchema } from '@/utils/schemas';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
-import { useNewsActions } from '@/hooks/useNews';
+import { useNewsActions, useSingleNews } from '@/hooks/useNews';
 import { useSingleUser } from '@/hooks/useUser';
 const CreateNewsFeed = () => {
   const navigate = useNavigate();
   const { user } = useSingleUser();
   const { uploadFile, createNews } = useNewsActions();
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkRole = () => {
     if (user?.role !== 'admin') {
@@ -30,7 +31,7 @@ const CreateNewsFeed = () => {
 
     try {
       // Get the base news data first
-
+      setIsLoading(true);
       let newsInitialData: {
         title: string;
         description: string;
@@ -62,6 +63,7 @@ const CreateNewsFeed = () => {
         pauseOnHover: true,
         draggable: true,
       });
+      setIsLoading(false);
       setTimeout(() => {
         navigate('/');
       }, 1600);
@@ -159,6 +161,8 @@ const CreateNewsFeed = () => {
 
               <div className="pt-4">
                 <SubmitBtn
+                  disabled={isLoading}
+                  isLoading={isLoading}
                   text="Create Article"
                   className="w-full py-3 text-sm md:text-base 
                            bg-gradient-to-r from-blue-500 to-blue-600 

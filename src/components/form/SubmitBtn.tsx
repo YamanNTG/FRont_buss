@@ -6,22 +6,32 @@ type SubmitBtnProps = {
   text?: string;
   disabled?: boolean;
   className?: string;
+  isLoading?: boolean;
+  loadingText?: string;
 };
 
-const SubmitBtn = ({ text, className }: SubmitBtnProps) => {
+const SubmitBtn = ({
+  text,
+  className,
+  disabled = false,
+  isLoading = false,
+  loadingText = 'Loading...',
+}: SubmitBtnProps) => {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === 'submitting';
+
+  const showSpinner = isLoading || isSubmitting;
 
   return (
     <Button
       type="submit"
       className={`w-full ${className || ''}`}
-      disabled={isSubmitting}
+      disabled={disabled || showSpinner}
     >
-      {isSubmitting ? (
+      {showSpinner ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          sending...
+          {loadingText}
         </>
       ) : (
         text || 'submit'
