@@ -35,7 +35,7 @@ const Landing = () => {
             </p>
             <p className="text-2xl text-red-500">
               Registration is possible only via invitation from the organization
-              admin
+              admin or as a Guest User
             </p>
             {/*Button layout */}
             <div className="flex flex-col space-y-4 w-full">
@@ -43,7 +43,7 @@ const Landing = () => {
                 asChild
                 className=" bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors duration-200"
               >
-                <Link to="/login">Sign In</Link>
+                <Link to="/login">Go to Sign In</Link>
               </Button>
             </div>
           </div>

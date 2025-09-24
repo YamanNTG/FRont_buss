@@ -6,12 +6,16 @@ import { toast } from 'react-toastify';
 import { userUserActions } from '@/hooks/useUser';
 import { useAuthActions, useAuthUser } from '@/hooks/useAuth';
 import { loginSchema } from '@/utils/schemas';
+import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { isLoading } = useAuthUser();
   const { showCurrentUser } = userUserActions();
   const { loginUser } = useAuthActions();
+
+  //Regular User Login
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,9 +62,30 @@ const Login: React.FC = () => {
 
       navigate('/');
     } catch (error: any) {
-      console.log(error, 'errorrrrr');
-
       toast.error(error || 'Login failed');
+    }
+  };
+
+  // Guest User Login
+  const handleGuestLogin = async () => {
+    try {
+      const guestCredentials = {
+        email: 'claudiuoprea21@gmail.com',
+        password: import.meta.env.VITE_TEST_PASSWORD as string,
+      };
+
+      const userData = await loginUser(guestCredentials);
+
+      if (userData) {
+        await showCurrentUser();
+        toast.success('Logged in as Guest', {
+          position: 'top-right',
+          autoClose: 3000,
+        });
+        navigate('/');
+      }
+    } catch (error) {
+      toast.error('Guest login failed');
     }
   };
 
@@ -78,6 +103,23 @@ const Login: React.FC = () => {
               text={isLoading ? 'Loading...' : 'Login'}
               disabled={isLoading}
             />
+
+            {/* Guest login button */}
+            <Button
+              type="button"
+              className="w-full"
+              onClick={handleGuestLogin}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                'Continue as Guest'
+              )}
+            </Button>
 
             <p className="text-sm">
               Forgot your password?{' '}
